@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>小寺ハミルトンゲイリー ガチャ</title>
     <style>
         * {
@@ -155,6 +155,9 @@
             font-size: 28px;
             margin-top: 30px;
             cursor: default;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
         }
         
@@ -489,9 +492,14 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            pointer-events: none;
         }
 
-        .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+        .modal-overlay.show { 
+            display: flex; 
+            animation: fadeIn 0.3s;
+            pointer-events: auto;
+        }
 
         .modal-card {
             background: white;
@@ -504,11 +512,11 @@
             transition: transform 0.3s;
             max-height: 85vh;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
             position: relative;
             z-index: 10001;
+            pointer-events: auto;
         }
 
         .modal-overlay.show .modal-card { transform: translateY(0); }
@@ -543,6 +551,7 @@
             justify-content: center;
             transition: background 0.3s;
             z-index: 10002;
+            pointer-events: auto;
         }
 
         .close-modal:hover { background: rgba(255,255,255,0.4); }
@@ -706,6 +715,7 @@
             cursor: pointer;
             min-width: 80px;
             transition: all 0.2s;
+            pointer-events: auto;
         }
         
         .buy-btn:hover { background: #5a6fd6; transform: scale(1.05); }
@@ -822,8 +832,8 @@
             background: linear-gradient(to bottom, #fff, #ffd700, #ff8c00);
             -webkit-background-clip: text;
             background-clip: text;
-            text-stroke: 4px #fff;
             -webkit-text-stroke: 4px #fff;
+            text-stroke: 4px #fff;
             filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
             margin-bottom: 20px;
             animation: titlePulse 1s ease-in-out infinite alternate;
@@ -1210,8 +1220,8 @@
             </div>
         </div>
 
-        <div class="modal-overlay" id="accountModal">
-            <div class="modal-card">
+        <div class="modal-overlay" id="accountModal" onclick="event.stopPropagation()">
+            <div class="modal-card" onclick="event.stopPropagation()">
                 <div class="modal-header">
                     <button class="close-modal" onclick="closeAccount()">✕</button>
                     <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
@@ -1266,8 +1276,8 @@
             </div>
         </div>
 
-        <div class="modal-overlay" id="shopModal">
-            <div class="modal-card">
+        <div class="modal-overlay" id="shopModal" onclick="event.stopPropagation()">
+            <div class="modal-card" onclick="event.stopPropagation()">
                 <div class="modal-header shop-header">
                     <button class="close-modal" onclick="closeShop()">✕</button>
                     <div class="modal-title">🛒 小寺ショップ</div>
@@ -1498,11 +1508,15 @@
 
             document.getElementById('shopModal').classList.add('show');
             document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
         }
 
         function closeShop() {
             document.getElementById('shopModal').classList.remove('show');
             document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
         }
 
         function buyItem(itemId) {
@@ -1722,12 +1736,16 @@
             updateStats();
             document.getElementById('accountModal').classList.add('show');
             document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
         }
 
         function closeAccount() {
             document.getElementById('accountModal').classList.remove('show');
             document.getElementById('emojiPicker').classList.remove('show');
             document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
         }
 
         function editName() {
