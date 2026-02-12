@@ -29,26 +29,39 @@
         /* 背景テーマ用クラス */
         body.theme-gold { background-color: #ffd700; }
         body.theme-kodera { background-color: #333; }
+        body.theme-space { background-color: #0b0d17; }
+        body.theme-jurassic { background-color: #1e3c00; }
+        body.theme-fire { background-color: #5a0000; }
+        body.theme-raibolt { background-color: #2a2a00; }
+        body.theme-mecha { background-color: #2c3e50; }
 
         /* 画像背景の時のオーバーレイ */
         body.theme-kodera::before,
-        body.theme-gold::before {
+        body.theme-gold::before,
+        body.theme-space::before,
+        body.theme-jurassic::before,
+        body.theme-fire::before,
+        body.theme-raibolt::before,
+        body.theme-mecha::before {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.3); /* 文字を見やすくするため少し暗く */
             z-index: -1;
             pointer-events: none;
         }
         
         body.theme-gold::before {
-            background: rgba(255, 215, 0, 0.02); 
-            -webkit-backdrop-filter: sepia(10%);
-            backdrop-filter: sepia(10%);
+            background: rgba(255, 215, 0, 0.05); 
+            -webkit-backdrop-filter: sepia(20%);
+            backdrop-filter: sepia(20%);
         }
+        
+        /* ライボルトは少し明るくてもいいかも */
+        body.theme-raibolt::before { background: rgba(0, 0, 0, 0.2); }
 
         .container {
             background: white;
@@ -60,60 +73,67 @@
             position: relative;
         }
 
-        /* 小寺背景とゴールド背景のときはコンテナを透明に */
+        /* 画像背景のときはコンテナを透明に */
         body.theme-kodera .container,
-        body.theme-gold .container {
-            background: rgba(255, 255, 255, 0.03);
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
+        body.theme-gold .container,
+        body.theme-space .container,
+        body.theme-jurassic .container,
+        body.theme-fire .container,
+        body.theme-raibolt .container,
+        body.theme-mecha .container {
+            background: rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* 文字色調整 */
-        body.theme-kodera h1,
-        body.theme-kodera .result-label,
-        body.theme-kodera .result-text,
-        body.theme-gold h1,
-        body.theme-gold .result-label,
-        body.theme-gold .result-text {
+        /* 文字色調整（白文字化） */
+        body[class*="theme-"] h1,
+        body[class*="theme-"] .result-label,
+        body[class*="theme-"] .result-text,
+        body[class*="theme-"] .user-name {
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
+        
+        /* ラベル関連の白文字化 */
+        body[class*="theme-"] .speed-selector label,
+        body[class*="theme-"] .auto-shuffle-label {
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
 
         /* セクション共通背景（テーマ適用時） */
-        body.theme-kodera .auto-shuffle-container,
-        body.theme-kodera .result-section,
-        body.theme-kodera .shuffle-counter,
-        body.theme-kodera .album-section,
-        body.theme-kodera .mypage-section,
-        body.theme-kodera .shop-section,
-        body.theme-gold .auto-shuffle-container,
-        body.theme-gold .result-section,
-        body.theme-gold .shuffle-counter,
-        body.theme-gold .album-section,
-        body.theme-gold .mypage-section,
-        body.theme-gold .shop-section {
-            background: rgba(255, 255, 255, 0.06);
-            -webkit-backdrop-filter: blur(3px);
-            backdrop-filter: blur(3px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* テーマ適用時のグラデーション調整 */
-        body.theme-kodera .shuffle-counter,
-        body.theme-kodera .album-section,
-        body.theme-kodera .mypage-section,
-        body.theme-gold .shuffle-counter,
-        body.theme-gold .album-section,
-        body.theme-gold .mypage-section {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+        body[class*="theme-"] .auto-shuffle-container,
+        body[class*="theme-"] .result-section,
+        body[class*="theme-"] .shuffle-counter,
+        body[class*="theme-"] .album-section,
+        body[class*="theme-"] .mypage-section,
+        body[class*="theme-"] .shop-section {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
         }
         
-        body.theme-kodera .shop-section,
-        body.theme-gold .shop-section {
-             background: linear-gradient(135deg, rgba(255, 107, 0, 0.25) 0%, rgba(255, 179, 71, 0.25) 100%);
+        /* マイページ内のステータスボックス調整 */
+        body[class*="theme-"] .status-item,
+        body[class*="theme-"] .shop-item {
+            background: rgba(255, 255, 255, 0.85);
+            border: none;
         }
 
+        /* テーマ適用時のグラデーション調整（セクション背景） */
+        body[class*="theme-"] .shuffle-counter,
+        body[class*="theme-"] .album-section,
+        body[class*="theme-"] .mypage-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+        }
+        
+        body[class*="theme-"] .shop-section {
+             background: linear-gradient(135deg, rgba(255, 107, 0, 0.3) 0%, rgba(255, 179, 71, 0.3) 100%);
+        }
 
         h1 {
             text-align: center;
@@ -153,13 +173,6 @@
             background: white;
             color: #667eea;
             font-weight: bold;
-        }
-
-        body.theme-kodera .speed-selector label,
-        body.theme-kodera .auto-shuffle-label,
-        body.theme-gold .speed-selector label,
-        body.theme-gold .auto-shuffle-label {
-            color: white;
         }
 
         /* セクション共通スタイル */
@@ -1224,6 +1237,13 @@
         const PERFECT_IMAGE_PATH = 'kodera.jpg';
         const BACK_KODERA_PATH = 'back_kodera.jpg';
         const BACK_GOLD_PATH = 'back_golden_kodera.jpg';
+        
+        // 新しい背景画像のパス定義
+        const BACK_SPACE_PATH = 'back_space_kodera.jpg';
+        const BACK_JURASSIC_PATH = 'back_jurassic_kodera.jpg';
+        const BACK_FIRE_PATH = 'back_fire_kodera.jpg';
+        const BACK_RAIBOLT_PATH = 'back_raibolt_kodera.jpg';
+        const BACK_MECHA_PATH = 'back_mecha_kodera.jpg';
 
         const FIXED_WORDS = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
 
@@ -1232,9 +1252,17 @@
             { id: 'ticket_kodera', name: '🎫 小寺確定チケット', desc: '次回必ず「小寺」から始まります', price: 5000, type: 'consumable' },
             { id: 'ticket_kodera_10', name: '🎫 小寺確定チケット×10', desc: '10枚まとめ買いで少しお得', price: 45000, type: 'consumable_bulk', amount: 10 },
             { id: 'ticket_kodera_50', name: '🎫 小寺確定チケット×50', desc: '50枚まとめ買いでかなりお得！', price: 200000, type: 'consumable_bulk', amount: 50 },
+            { id: 'ticket_kodera_300', name: '🎫 小寺確定チケット×300', desc: '300枚まとめ買い！業者向け超お得セット', price: 1000000, type: 'consumable_bulk', amount: 300 },
             { id: 'title_wife', name: '💍 称号「小寺の妻」', desc: '永遠の愛の証。マイページに表示されます', price: 10000, type: 'title' },
+            
+            // 背景アイテム
             { id: 'bg_kodera', name: '🖼️ 小寺さん背景', desc: '常に小寺さんに見守られます', price: 100000, type: 'theme', themeClass: 'theme-kodera' },
-            { id: 'bg_gold', name: '👑 黄金の小寺背景', desc: '圧倒的な成金感と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-gold' }
+            { id: 'bg_gold', name: '👑 黄金の小寺背景', desc: '圧倒的な成金感と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-gold' },
+            { id: 'bg_space', name: '🌌 スペース小寺背景', desc: '宇宙の神秘と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-space' },
+            { id: 'bg_jurassic', name: '🦖 ジュラシック小寺背景', desc: '太古の息吹と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-jurassic' },
+            { id: 'bg_fire', name: '🔥 ファイヤー小寺背景', desc: '燃え上がる情熱と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-fire' },
+            { id: 'bg_raibolt', name: '⚡ ライボルト小寺背景', desc: '稲妻のような衝撃と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-raibolt' },
+            { id: 'bg_mecha', name: '🤖 メカ小寺背景', desc: '科学の結晶と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-mecha' }
         ];
 
         function generateAllKoderaCombinations() {
@@ -1262,8 +1290,8 @@
             loadProfile();
             applyTheme();
             checkGodSpeed();
-            renderShop(); // ショップリストを即時描画
-            updateStats(); // 統計情報を即時描画
+            renderShop();
+            updateStats();
 
             if (PERFECT_IMAGE_PATH) {
                 document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
@@ -1307,8 +1335,8 @@
             shuffleCount++;
             totalShuffleCount++;
             saveData();
-            updateStats(); // シャッフルのたびに更新
-            renderShop(); // 購入可否ボタンの更新のため
+            updateStats();
+            renderShop();
         }
 
         function handleCheatClick() {
@@ -1410,7 +1438,7 @@
                 }
                 
                 saveData();
-                renderShop(); // 購入後にリスト更新
+                renderShop();
                 
                 if (item.id === 'speed_god') checkGodSpeed();
                 if (item.id === 'ticket_kodera' || item.type === 'consumable_bulk') updateTicketDisplay();
@@ -1432,19 +1460,28 @@
         function setTheme(themeClass) {
             localStorage.setItem('currentTheme', themeClass);
             applyTheme();
-            renderShop(); // ボタン状態更新
+            renderShop();
         }
 
         function applyTheme() {
             const theme = localStorage.getItem('currentTheme');
             document.body.className = theme || '';
-            
+            document.body.style.backgroundImage = ''; // リセット
+
             if (theme === 'theme-kodera') {
                 document.body.style.backgroundImage = `url('${BACK_KODERA_PATH}')`;
             } else if (theme === 'theme-gold') {
                 document.body.style.backgroundImage = `url('${BACK_GOLD_PATH}')`;
-            } else {
-                document.body.style.backgroundImage = '';
+            } else if (theme === 'theme-space') {
+                document.body.style.backgroundImage = `url('${BACK_SPACE_PATH}')`;
+            } else if (theme === 'theme-jurassic') {
+                document.body.style.backgroundImage = `url('${BACK_JURASSIC_PATH}')`;
+            } else if (theme === 'theme-fire') {
+                document.body.style.backgroundImage = `url('${BACK_FIRE_PATH}')`;
+            } else if (theme === 'theme-raibolt') {
+                document.body.style.backgroundImage = `url('${BACK_RAIBOLT_PATH}')`;
+            } else if (theme === 'theme-mecha') {
+                document.body.style.backgroundImage = `url('${BACK_MECHA_PATH}')`;
             }
         }
 
