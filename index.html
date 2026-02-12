@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ランダム文章ジェネレーター</title>
+    <title>小寺ハミルトンゲイリー ガチャ</title>
     <style>
         * {
             margin: 0;
@@ -41,14 +41,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.3);
             z-index: -1;
             pointer-events: none;
         }
         
         body.theme-gold::before {
-            background: rgba(255, 215, 0, 0.1); 
-            backdrop-filter: sepia(50%);
+            background: rgba(255, 215, 0, 0.05); 
+            backdrop-filter: sepia(30%);
         }
 
         .container {
@@ -59,6 +59,46 @@
             max-width: 700px;
             width: 100%;
             position: relative;
+        }
+
+        /* 小寺背景とゴールド背景のときはコンテナを透明に */
+        body.theme-kodera .container,
+        body.theme-gold .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 小寺背景のときは文字を白に */
+        body.theme-kodera h1,
+        body.theme-kodera .result-label,
+        body.theme-kodera .result-text,
+        body.theme-gold h1,
+        body.theme-gold .result-label,
+        body.theme-gold .result-text {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 各セクションに軽い背景を追加 */
+        body.theme-kodera .auto-shuffle-container,
+        body.theme-kodera .result-section,
+        body.theme-kodera .shuffle-counter,
+        body.theme-gold .auto-shuffle-container,
+        body.theme-gold .result-section,
+        body.theme-gold .shuffle-counter {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(5px);
+        }
+
+        body.theme-kodera .shuffle-counter,
+        body.theme-gold .shuffle-counter {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+        }
+
+        body.theme-kodera .album-section,
+        body.theme-gold .album-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
         }
 
         /* 右上のボタン群 */
@@ -92,6 +132,21 @@
         .shop-btn { border-color: #ff6b00; color: #ff6b00; background: rgba(255, 107, 0, 0.1); }
         .shop-btn:hover { background: #ff6b00; color: white; }
 
+        /* 小寺背景でのボタンも見やすく */
+        body.theme-kodera .header-btn,
+        body.theme-gold .header-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: white;
+        }
+
+        body.theme-kodera .shop-btn,
+        body.theme-gold .shop-btn {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
         h1 {
             text-align: center;
             color: #333;
@@ -99,10 +154,9 @@
             font-size: 28px;
             margin-top: 30px;
             cursor: default;
-            user-select: none; /* 連打しても選択されないように */
+            user-select: none;
         }
         
-        /* 隠しコマンド用のアクティブ効果 */
         h1:active { transform: scale(0.98); }
 
         .input-section { margin-bottom: 30px; }
@@ -131,6 +185,14 @@
             background: white;
             color: #667eea;
             font-weight: bold;
+        }
+
+        /* 速度選択やラベルの見やすさ */
+        body.theme-kodera .speed-selector label,
+        body.theme-kodera .auto-shuffle-label,
+        body.theme-gold .speed-selector label,
+        body.theme-gold .auto-shuffle-label {
+            color: white;
         }
 
         /* アルバム機能 */
@@ -573,7 +635,6 @@
         }
         .status-item.highlight .status-value { color: #e53e3e; }
         
-        /* KP表示用 */
         .status-item.kp-box {
             background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
             border-color: #c3cfe2;
@@ -910,6 +971,34 @@
             animation: fall 3s linear infinite;
         }
 
+        .laser {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #ff00de, transparent);
+            animation: laserSweep 2s linear infinite;
+            box-shadow: 0 0 20px #ff00de;
+        }
+
+        .flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            animation: flash 0.5s infinite;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            border: 5px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: ringExpand 2s ease-out infinite;
+        }
+
         .close-perfect {
             position: absolute;
             top: 20px;
@@ -1070,7 +1159,7 @@
         </div>
 
         <div class="kodera-complete" id="koderaComplete">
-            <button class="close-complete">✕ 閉じる</button>
+            <button class="close-complete" onclick="closeComplete()">✕ 閉じる</button>
             <div class="kodera-complete-container">
                 <div class="complete-title">👑 LEGEND 👑</div>
                 <div class="complete-subtitle">全120種 完全制覇！</div>
@@ -1080,7 +1169,7 @@
         </div>
 
         <div class="kodera-perfect" id="koderaPerfect">
-            <button class="close-perfect">✕ 閉じる</button>
+            <button class="close-perfect" onclick="closePerfect()">✕ 閉じる</button>
             <div class="kodera-perfect-container">
                 <div class="kodera-perfect-title">🎊 PERFECT 🎊</div>
                 <div class="kodera-perfect-subtitle">小寺ハミルトンゲイリー！！！</div>
@@ -1152,7 +1241,7 @@
                     <div class="kp-display">所持KP: <span id="shopKpDisplay">0</span></div>
                 </div>
                 <div class="shop-list" id="shopList">
-                    </div>
+                </div>
             </div>
         </div>
 
@@ -1192,18 +1281,16 @@
     <script>
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
-        let shuffleCount = 0; // 現在のポイント (KP)
-        let totalShuffleCount = 0; // 累計シャッフル回数
+        let shuffleCount = 0;
+        let totalShuffleCount = 0;
         let currentPage = 1;
         let currentSpeed = 500;
         let ticketActive = false;
-        let inventory = {}; // 購入済みアイテム
+        let inventory = {};
 
-        // 隠しコマンド用
         let cheatClickCount = 0;
         let cheatClickTimer = null;
 
-        // 画像パス設定
         const PERFECT_IMAGE_PATH = 'kodera.jpg';
         const BACK_KODERA_PATH = 'back_kodera.jpg';
         const BACK_GOLD_PATH = 'back_golden_kodera.jpg';
@@ -1290,31 +1377,27 @@
             saveData();
         }
 
-        // --- 隠しコマンド機能 ---
         function handleCheatClick() {
             cheatClickCount++;
             
-            // 1秒間操作がなければリセット
             if (cheatClickTimer) clearTimeout(cheatClickTimer);
             cheatClickTimer = setTimeout(() => {
                 cheatClickCount = 0;
             }, 1000);
 
-            // 7回クリックで発動
             if (cheatClickCount >= 7) {
                 const bonus = 1000000;
                 shuffleCount += bonus;
-                totalShuffleCount += bonus; // 累計にも加算するかはお好みで（ここでは加算）
+                totalShuffleCount += bonus;
                 saveData();
                 updateStats();
                 
                 alert(`🛠️ デバッグモード発動！\nKPを ${bonus.toLocaleString()} 追加しました！\n現在のKP: ${shuffleCount.toLocaleString()}`);
                 
-                cheatClickCount = 0; // カウンタリセット
+                cheatClickCount = 0;
             }
         }
 
-        // --- ショップ機能 ---
         function openShop() {
             const list = document.getElementById('shopList');
             document.getElementById('shopKpDisplay').textContent = shuffleCount;
@@ -1679,10 +1762,9 @@
             document.getElementById('userRank').textContent = `ランク: ${rank}`;
         }
 
-        /* エフェクト関数（共通） */
         function createFireworks(targetId = 'koderaPerfect') {
             const container = document.getElementById(targetId);
-            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#000000', '#8b00ff', '#ff1493', '#ffffff', '#ffd700'];
+            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493', '#ffffff', '#ffd700'];
             const count = targetId === 'koderaComplete' ? 200 : 100;
 
             for (let i = 0; i < count; i++) {
