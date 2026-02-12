@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランダム文章ジェネレーター</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .word-inputs {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .word-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .word-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .control-group input[type="checkbox"],
+        .control-group input[type="radio"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .control-group label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .link-icon {
+            cursor: pointer;
+            font-size: 18px;
+            padding: 8px;
+            color: #999;
+            transition: all 0.3s;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .link-icon:hover {
+            color: #667eea;
+            background: #f0f0ff;
+        }
+
+        .link-icon.linked {
+            color: white;
+            background: #667eea;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .shuffle-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .shuffle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .clear-btn {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .clear-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            min-height: 100px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .result-text {
+            font-size: 24px;
+            color: #333;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .result-text {
+                font-size: 20px;
+            }
+
+            .controls {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 ランダム文章ジェネレーター</h1>
+        
+        <div class="input-section">
+            <div class="word-inputs">
+                <div class="word-input-row">
+                    <div class="word-number">1</div>
+                    <input type="text" id="word1" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first1" onclick="handlePositionClick('first', 1)">
+                            <label for="first1">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last1" onclick="handlePositionClick('last', 1)">
+                            <label for="last1">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(1)" id="link1" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">2</div>
+                    <input type="text" id="word2" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first2" onclick="handlePositionClick('first', 2)">
+                            <label for="first2">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last2" onclick="handlePositionClick('last', 2)">
+                            <label for="last2">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(2)" id="link2" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">3</div>
+                    <input type="text" id="word3" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first3" onclick="handlePositionClick('first', 3)">
+                            <label for="first3">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last3" onclick="handlePositionClick('last', 3)">
+                            <label for="last3">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(3)" id="link3" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">4</div>
+                    <input type="text" id="word4" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first4" onclick="handlePositionClick('first', 4)">
+                            <label for="first4">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last4" onclick="handlePositionClick('last', 4)">
+                            <label for="last4">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(4)" id="link4" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">5</div>
+                    <input type="text" id="word5" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first5" onclick="handlePositionClick('first', 5)">
+                            <label for="first5">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last5" onclick="handlePositionClick('last', 5)">
+                            <label for="last5">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(5)" id="link5" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">6</div>
+                    <input type="text" id="word6" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first6" onclick="handlePositionClick('first', 6)">
+                            <label for="first6">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last6" onclick="handlePositionClick('last', 6)">
+                            <label for="last6">最後</label>
+                        </div>
+                        <div class="link-icon" onclick="toggleLink(6)" id="link6" title="次と結合">🔗</div>
+                    </div>
+                </div>
+                <div class="word-input-row">
+                    <div class="word-number">7</div>
+                    <input type="text" id="word7" placeholder="単語を入力">
+                    <div class="controls">
+                        <div class="control-group">
+                            <input type="checkbox" id="first7" onclick="handlePositionClick('first', 7)">
+                            <label for="first7">最初</label>
+                        </div>
+                        <div class="control-group">
+                            <input type="checkbox" id="last7" onclick="handlePositionClick('last', 7)">
+                            <label for="last7">最後</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="shuffle-btn" onclick="shuffleWords()">シャッフル！</button>
+                <button class="clear-btn" onclick="clearAll()">クリア</button>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-label">生成された文章：</div>
+            <div class="result-text" id="resultText"></div>
+        </div>
+    </div>
+
+    <script>
+        const linkedWords = new Set();
+
+        function handlePositionClick(type, index) {
+            const checkbox = document.getElementById(`${type}${index}`);
+            
+            // もう一度押したら選択解除
+            if (!checkbox.checked) {
+                return;
+            }
+            
+            // 同じタイプの他のチェックボックスをすべて外す
+            for (let i = 1; i <= 7; i++) {
+                if (i !== index) {
+                    document.getElementById(`${type}${i}`).checked = false;
+                }
+            }
+        }
+
+        function toggleLink(index) {
+            const linkIcon = document.getElementById(`link${index}`);
+            if (linkedWords.has(index)) {
+                linkedWords.delete(index);
+                linkIcon.classList.remove('linked');
+            } else {
+                linkedWords.add(index);
+                linkIcon.classList.add('linked');
+            }
+        }
+
+        function shuffleWords() {
+            // 単語データを収集
+            const wordData = [];
+            for (let i = 1; i <= 7; i++) {
+                const word = document.getElementById(`word${i}`).value.trim();
+                if (word) {
+                    const firstChecked = document.getElementById(`first${i}`).checked;
+                    const lastChecked = document.getElementById(`last${i}`).checked;
+                    wordData.push({
+                        word: word,
+                        index: i,
+                        first: firstChecked,
+                        last: lastChecked
+                    });
+                }
+            }
+
+            if (wordData.length === 0) {
+                alert('単語を入力してください！');
+                return;
+            }
+
+            // イディオム(連結グループ)を作成
+            const groups = [];
+            let currentGroup = [wordData[0]];
+
+            for (let i = 1; i < wordData.length; i++) {
+                const prevIndex = wordData[i - 1].index;
+                if (linkedWords.has(prevIndex)) {
+                    currentGroup.push(wordData[i]);
+                } else {
+                    groups.push(currentGroup);
+                    currentGroup = [wordData[i]];
+                }
+            }
+            groups.push(currentGroup);
+
+            // 各グループを一つの単位にまとめる
+            const units = groups.map(group => {
+                const words = group.map(w => w.word).join('');
+                const hasFirst = group.some(w => w.first);
+                const hasLast = group.some(w => w.last);
+                return { words, first: hasFirst, last: hasLast };
+            });
+
+            // 最初と最後に固定されたものを分離
+            const firstUnit = units.find(u => u.first);
+            const lastUnit = units.find(u => u.last);
+            const middleUnits = units.filter(u => !u.first && !u.last);
+
+            // 中間部分をシャッフル
+            for (let i = middleUnits.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [middleUnits[i], middleUnits[j]] = [middleUnits[j], middleUnits[i]];
+            }
+
+            // 最終的な配列を組み立て
+            const result = [];
+            if (firstUnit) result.push(firstUnit.words);
+            result.push(...middleUnits.map(u => u.words));
+            if (lastUnit && lastUnit !== firstUnit) result.push(lastUnit.words);
+
+            // 結果を表示
+            const resultText = result.join('');
+            document.getElementById('resultText').textContent = resultText;
+            document.getElementById('resultSection').classList.add('show');
+        }
+
+        function clearAll() {
+            // 全ての入力フィールドをクリア
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`word${i}`).value = '';
+                document.getElementById(`first${i}`).checked = false;
+                document.getElementById(`last${i}`).checked = false;
+            }
+            
+            // リンクをクリア
+            linkedWords.clear();
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`link${i}`).classList.remove('linked');
+            }
+            
+            // 結果を非表示
+            document.getElementById('resultSection').classList.remove('show');
+            document.getElementById('resultText').textContent = '';
+        }
+
+        // Enterキーでシャッフル実行
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                shuffleWords();
+            }
+        });
+    </script>
+</body>
+</html>
