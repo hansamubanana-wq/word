@@ -247,6 +247,37 @@
             animation: fadeIn 0.5s;
         }
 
+        .kodera-chance {
+            display: none;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: 4px solid #ff6b00;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: koderaAppear 0.5s, koderaPulse 1s infinite;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.5);
+        }
+
+        .kodera-chance.show {
+            display: block;
+        }
+
+        .kodera-chance-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 3px 3px 0px #ffed4e, 6px 6px 0px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+
+        .kodera-chance-emoji {
+            font-size: 48px;
+            display: block;
+            margin: 10px 0;
+            animation: spin 2s linear infinite;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -255,6 +286,38 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes koderaAppear {
+            0% {
+                transform: scale(0.5) rotate(-5deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes koderaPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
             }
         }
 
@@ -424,6 +487,19 @@
                 margin-top: 20px;
             }
 
+            .kodera-chance {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            .kodera-chance-text {
+                font-size: 24px;
+            }
+
+            .kodera-chance-emoji {
+                font-size: 36px;
+            }
+
             .result-text {
                 font-size: 20px;
             }
@@ -490,6 +566,14 @@
             button {
                 padding: 12px;
                 font-size: 14px;
+            }
+
+            .kodera-chance-text {
+                font-size: 20px;
+            }
+
+            .kodera-chance-emoji {
+                font-size: 32px;
             }
 
             .result-text {
@@ -625,6 +709,11 @@
                 <button class="shuffle-btn" onclick="shuffleWords()">シャッフル！</button>
                 <button class="clear-btn" onclick="clearAll()">クリア</button>
             </div>
+        </div>
+
+        <div class="kodera-chance" id="koderaChance">
+            <div class="kodera-chance-emoji">🎉✨🎊</div>
+            <div class="kodera-chance-text">小寺チャンス！！</div>
         </div>
 
         <div class="result-section" id="resultSection">
@@ -831,6 +920,14 @@
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
+            // 小寺チャンス判定
+            const koderaChanceElement = document.getElementById('koderaChance');
+            if (resultText.startsWith('小寺')) {
+                koderaChanceElement.classList.add('show');
+            } else {
+                koderaChanceElement.classList.remove('show');
+            }
+            
             // 履歴に保存（自動シャッフル時は保存しない）
             if (!isAutoShuffling) {
                 saveToHistory(resultText);
@@ -859,6 +956,7 @@
             // 結果を非表示
             document.getElementById('resultSection').classList.remove('show');
             document.getElementById('resultText').textContent = '';
+            document.getElementById('koderaChance').classList.remove('show');
         }
 
         // Enterキーでシャッフル実行
