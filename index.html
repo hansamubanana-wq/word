@@ -307,7 +307,6 @@
             background-size: 400% 400%;
             animation: rainbowBackground 3s ease infinite;
             z-index: 9999;
-            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -950,7 +949,7 @@
 
         <!-- パーフェクト演出の全画面オーバーレイ -->
         <div class="kodera-perfect" id="koderaPerfect">
-            <button class="close-perfect" onclick="closePerfect()">✕ 閉じる</button>
+            <button class="close-perfect">✕ 閉じる</button>
             <div class="kodera-perfect-container">
                 <div class="kodera-perfect-title">🎊 PERFECT 🎊</div>
                 <div class="kodera-perfect-subtitle">小寺ハミルトンゲイリー！！！</div>
@@ -1008,6 +1007,9 @@
                 document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
                 document.getElementById('perfectImage').style.display = 'block';
             }
+
+            // 閉じるボタンのイベントリスナーを設定
+            document.querySelector('.close-perfect').addEventListener('click', closePerfect);
         });
 
         function createFireworks() {
@@ -1084,7 +1086,8 @@
             perfectElement.classList.remove('show');
             
             // エフェクトをクリア
-            perfectElement.querySelectorAll('.firework, .star, .confetti').forEach(el => el.remove());
+            const effects = perfectElement.querySelectorAll('.firework, .star, .confetti');
+            effects.forEach(el => el.remove());
         }
 
         function toggleAutoShuffle() {
@@ -1301,10 +1304,16 @@
             document.getElementById('koderaChance').classList.remove('show');
         }
 
-        // Enterキーでシャッフル実行
+        // Enterキーでシャッフル実行、ESCキーでパーフェクト演出を閉じる
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 shuffleWords();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePerfect();
             }
         });
     </script>
