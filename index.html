@@ -463,6 +463,16 @@
             z-index: 1;
         }
 
+        .kodera-chance-bonus {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 2px 2px 0px #000, 0 0 10px #00ff00;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
         /* モーダル共通 */
         .modal-overlay {
             display: none;
@@ -471,8 +481,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99999;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -494,6 +504,8 @@
             -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 100000;
         }
 
         .modal-overlay.show .modal-card { transform: translateY(0); }
@@ -527,7 +539,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.3s;
-            z-index: 10;
+            z-index: 100001;
         }
 
         .close-modal:hover { background: rgba(255,255,255,0.4); }
@@ -833,6 +845,15 @@
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
+        .complete-bonus {
+            font-size: 64px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 3px 3px 0px #000, 0 0 30px #00ff00, 0 0 60px #00ff00;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
         .complete-image {
             max-width: 450px;
             max-height: 450px;
@@ -934,6 +955,15 @@
             text-shadow: 3px 3px 0px #ff0000, 6px 6px 0px #000, 0 0 20px #fff;
             margin-bottom: 30px;
             animation: shake 0.5s infinite;
+        }
+
+        .kodera-perfect-bonus {
+            font-size: 56px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 3px 3px 0px #000, 0 0 20px #00ff00, 0 0 40px #00ff00;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
         }
 
         .kodera-perfect-image {
@@ -1161,6 +1191,7 @@
             <div class="kodera-complete-container">
                 <div class="complete-title">👑 LEGEND 👑</div>
                 <div class="complete-subtitle">全120種 完全制覇！</div>
+                <div class="complete-bonus">+100,000 KP GET!!!</div>
                 <div class="complete-message">あなたが真の<br>小寺ハミルトンゲイリーマスターです</div>
                 <img id="completeImage" class="complete-image" src="" alt="Legendary Kodera">
             </div>
@@ -1171,6 +1202,7 @@
             <div class="kodera-perfect-container">
                 <div class="kodera-perfect-title">🎊 PERFECT 🎊</div>
                 <div class="kodera-perfect-subtitle">小寺ハミルトンゲイリー！！！</div>
+                <div class="kodera-perfect-bonus">+1,000 KP GET!!</div>
                 <img id="perfectImage" class="kodera-perfect-image" src="" alt="Perfect!" style="display: none;">
             </div>
         </div>
@@ -1246,6 +1278,7 @@
         <div class="kodera-chance" id="koderaChance">
             <div class="kodera-chance-emoji">🎉✨🎊</div>
             <div class="kodera-chance-text">小寺チャンス！！</div>
+            <div class="kodera-chance-bonus">+100 KP GET!</div>
         </div>
 
         <div class="result-section" id="resultSection">
@@ -1897,6 +1930,10 @@
             const completeElement = document.getElementById('koderaComplete');
             completeElement.classList.add('show');
             
+            // コンプリートボーナス！10万KP
+            shuffleCount += 100000;
+            saveData();
+            
             if (isAutoShuffling) {
                 toggleAutoShuffle();
             }
@@ -1999,11 +2036,17 @@
             incrementShuffleCount();
             
             if (resultText === '小寺ハミルトンゲイリー' || resultText === '小寺・ハミルトンゲイリー') {
+                // パーフェクト！ボーナス1000 KP
+                shuffleCount += 1000;
+                saveData();
                 showPerfect();
                 saveToKoderaHistory(resultText, true);
                 unlockInAlbum(resultText);
             }
             else if (resultText.startsWith('小寺')) {
+                // 小寺チャンス！ボーナス100 KP
+                shuffleCount += 100;
+                saveData();
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.add('show');
                 saveToKoderaHistory(resultText, false);
