@@ -149,6 +149,56 @@
         .button-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .auto-shuffle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .auto-shuffle-toggle {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .auto-shuffle-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .auto-shuffle-toggle.active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+        }
+
+        .auto-shuffle-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: bold;
         }
 
         button {
@@ -351,6 +401,19 @@
                 padding: 8px 12px;
             }
 
+            .auto-shuffle-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .auto-shuffle-toggle {
+                width: 100%;
+            }
+
+            .auto-shuffle-label {
+                text-align: center;
+            }
+
             button {
                 padding: 14px;
                 font-size: 15px;
@@ -551,6 +614,13 @@
                 </div>
             </div>
 
+            <div class="auto-shuffle-container">
+                <button class="auto-shuffle-toggle" id="autoShuffleBtn" onclick="toggleAutoShuffle()">
+                    🎲 自動シャッフル開始
+                </button>
+                <span class="auto-shuffle-label" id="autoShuffleLabel">停止中</span>
+            </div>
+
             <div class="button-group">
                 <button class="shuffle-btn" onclick="shuffleWords()">シャッフル！</button>
                 <button class="clear-btn" onclick="clearAll()">クリア</button>
@@ -576,11 +646,50 @@
     <script>
         const linkedWords = new Set();
         const MAX_HISTORY = 10;
+        let autoShuffleInterval = null;
+        let isAutoShuffling = false;
 
-        // ページ読み込み時に履歴を表示
+        // 初期値を設定
+        const initialWords = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
+
+        // ページ読み込み時に履歴を表示し、初期値を設定
         window.addEventListener('DOMContentLoaded', function() {
             displayHistory();
+            
+            // 初期値を入力欄に設定
+            initialWords.forEach((word, index) => {
+                document.getElementById(`word${index + 1}`).value = word;
+            });
         });
+
+        function toggleAutoShuffle() {
+            const btn = document.getElementById('autoShuffleBtn');
+            const label = document.getElementById('autoShuffleLabel');
+            
+            if (isAutoShuffling) {
+                // 停止
+                clearInterval(autoShuffleInterval);
+                autoShuffleInterval = null;
+                isAutoShuffling = false;
+                btn.classList.remove('active');
+                btn.textContent = '🎲 自動シャッフル開始';
+                label.textContent = '停止中';
+            } else {
+                // 開始
+                isAutoShuffling = true;
+                btn.classList.add('active');
+                btn.textContent = '⏸️ 自動シャッフル停止';
+                label.textContent = '実行中...';
+                
+                // 最初に1回実行
+                shuffleWords();
+                
+                // 0.5秒ごとに実行
+                autoShuffleInterval = setInterval(() => {
+                    shuffleWords();
+                }, 500);
+            }
+        }
 
         function handlePositionClick(type, index) {
             const checkbox = document.getElementById(`${type}${index}`);
@@ -671,7 +780,9 @@
             }
 
             if (wordData.length === 0) {
-                alert('単語を入力してください！');
+                if (!isAutoShuffling) {
+                    alert('単語を入力してください！');
+                }
                 return;
             }
 
@@ -720,11 +831,18 @@
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
-            // 履歴に保存
-            saveToHistory(resultText);
+            // 履歴に保存（自動シャッフル時は保存しない）
+            if (!isAutoShuffling) {
+                saveToHistory(resultText);
+            }
         }
 
         function clearAll() {
+            // 自動シャッフルを停止
+            if (isAutoShuffling) {
+                toggleAutoShuffle();
+            }
+            
             // 全ての入力フィールドをクリア
             for (let i = 1; i <= 7; i++) {
                 document.getElementById(`word${i}`).value = '';
