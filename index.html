@@ -305,7 +305,7 @@
             height: 100%;
             background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
             background-size: 400% 400%;
-            animation: rainbowBackground 3s ease infinite;
+            animation: rainbowBackground 1.5s ease infinite;
             z-index: 9999;
             flex-direction: column;
             align-items: center;
@@ -315,6 +315,134 @@
 
         .kodera-perfect.show {
             display: flex;
+        }
+
+        .kodera-perfect::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(255, 255, 255, 0.3) 100%);
+            animation: pulseOverlay 2s infinite;
+        }
+
+        .kodera-perfect-container {
+            position: relative;
+            text-align: center;
+            animation: zoomInOut 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(255, 255, 255, 1));
+        }
+
+        .kodera-perfect-title {
+            font-size: 100px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #000, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de, 0 0 200px #ff00de;
+            letter-spacing: 10px;
+            margin-bottom: 30px;
+            animation: textGlow 0.5s ease-in-out infinite, textShake 0.3s infinite;
+            transform-origin: center;
+        }
+
+        .kodera-perfect-subtitle {
+            font-size: 56px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 3px 3px 0px #ff0000, 6px 6px 0px #000, 0 0 20px #fff, 0 0 40px #ffff00;
+            margin-bottom: 30px;
+            animation: shake 0.3s infinite, colorChange 1s infinite;
+        }
+
+        .kodera-perfect-image {
+            max-width: 500px;
+            max-height: 500px;
+            border: 15px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #fff, 0 0 100px #ff00de, 0 0 150px #ff00de, 0 0 200px #00ff00, inset 0 0 50px rgba(255, 255, 255, 0.5);
+            animation: rotate3d 3s linear infinite, imagePulse 0.5s ease-in-out infinite, imageGlow 1s infinite;
+            margin: 20px 0;
+            filter: brightness(1.3) saturate(1.5);
+        }
+
+        .laser {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #ff00de, transparent);
+            animation: laserSweep 2s linear infinite;
+            box-shadow: 0 0 20px #ff00de;
+        }
+
+        .flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            animation: flash 0.5s infinite;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            border: 5px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: ringExpand 2s ease-out infinite;
+        }
+
+        @keyframes pulseOverlay {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes textShake {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(-5px) translateY(-5px) rotate(-2deg); }
+            75% { transform: translateX(5px) translateY(5px) rotate(2deg); }
+        }
+
+        @keyframes colorChange {
+            0% { color: #ffff00; }
+            25% { color: #ff00ff; }
+            50% { color: #00ffff; }
+            75% { color: #ff0000; }
+            100% { color: #ffff00; }
+        }
+
+        @keyframes imageGlow {
+            0%, 100% { filter: brightness(1.3) saturate(1.5) drop-shadow(0 0 50px #fff); }
+            50% { filter: brightness(1.8) saturate(2) drop-shadow(0 0 100px #ff00de); }
+        }
+
+        @keyframes laserSweep {
+            0% { left: -10%; }
+            100% { left: 110%; }
+        }
+
+        @keyframes flash {
+            0%, 90%, 100% { opacity: 0; }
+            95% { opacity: 0.8; }
+        }
+
+        @keyframes ringExpand {
+            0% {
+                width: 50px;
+                height: 50px;
+                top: 50%;
+                left: 50%;
+                margin: -25px 0 0 -25px;
+                opacity: 1;
+            }
+            100% {
+                width: 800px;
+                height: 800px;
+                top: 50%;
+                left: 50%;
+                margin: -400px 0 0 -400px;
+                opacity: 0;
+            }
         }
 
         .kodera-perfect-container {
@@ -613,6 +741,143 @@
             font-size: 14px;
         }
 
+        /* シャッフルカウンター */
+        .shuffle-counter {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .shuffle-counter-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .shuffle-counter-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        /* 小寺チャンス専用履歴 */
+        .kodera-history-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 15px;
+            border: 3px solid #ff6b00;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .kodera-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .kodera-history-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        .clear-kodera-history-btn {
+            padding: 8px 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        .clear-kodera-history-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .kodera-history-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .kodera-history-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            animation: koderaItemAppear 0.5s;
+        }
+
+        .kodera-history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .kodera-history-item.perfect {
+            background: linear-gradient(135deg, #ff00de 0%, #00ff00 100%);
+            color: white;
+            border-left: 4px solid #ff0000;
+            font-weight: bold;
+            animation: koderaItemAppear 0.5s, perfectGlow 2s infinite;
+        }
+
+        .kodera-history-text {
+            flex: 1;
+            font-size: 16px;
+            word-break: break-word;
+        }
+
+        .kodera-history-time {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        .kodera-history-badge {
+            background: #ff0000;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        @keyframes koderaItemAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes perfectGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 0, 222, 1);
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -719,6 +984,40 @@
                 font-size: 20px;
             }
 
+            .shuffle-counter-value {
+                font-size: 28px;
+            }
+
+            .kodera-history-section {
+                padding: 20px;
+            }
+
+            .kodera-history-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .kodera-history-title {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .clear-kodera-history-btn {
+                width: 100%;
+            }
+
+            .kodera-history-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .kodera-history-time {
+                margin-left: 0;
+            }
+
             .history-section {
                 padding: 20px;
                 margin-top: 20px;
@@ -814,6 +1113,18 @@
 
             .result-text {
                 font-size: 18px;
+            }
+
+            .shuffle-counter-value {
+                font-size: 24px;
+            }
+
+            .kodera-history-title {
+                font-size: 14px;
+            }
+
+            .kodera-history-text {
+                font-size: 14px;
             }
 
             .history-text {
@@ -968,6 +1279,21 @@
             <div class="result-text" id="resultText"></div>
         </div>
 
+        <div class="shuffle-counter">
+            <div class="shuffle-counter-label">シャッフル回数</div>
+            <div class="shuffle-counter-value" id="shuffleCount">0</div>
+        </div>
+
+        <div class="kodera-history-section">
+            <div class="kodera-history-header">
+                <div class="kodera-history-title">🌟 小寺チャンス履歴（永久保存）</div>
+                <button class="clear-kodera-history-btn" onclick="clearKoderaHistory()">履歴をクリア</button>
+            </div>
+            <div class="kodera-history-list" id="koderaHistoryList">
+                <div class="history-empty">まだ小寺チャンスが出ていません</div>
+            </div>
+        </div>
+
         <div class="history-section">
             <div class="history-header">
                 <div class="history-title">📜 履歴（最大10件）</div>
@@ -984,11 +1310,12 @@
         const MAX_HISTORY = 10;
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
+        let shuffleCount = 0;
 
         // ★★★ 画像のパスをここに設定してください ★★★
         // 例: const PERFECT_IMAGE_PATH = 'path/to/your/image.jpg';
         // または: const PERFECT_IMAGE_PATH = 'https://example.com/image.jpg';
-        const PERFECT_IMAGE_PATH = '';  // ←ここに画像のパスを入れてください
+        const PERFECT_IMAGE_PATH = 'kodera.jpg';  // ←ここに画像のパスを入れてください
 
         // 初期値を設定
         const initialWords = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
@@ -996,6 +1323,8 @@
         // ページ読み込み時に履歴を表示し、初期値を設定
         window.addEventListener('DOMContentLoaded', function() {
             displayHistory();
+            displayKoderaHistory();
+            loadShuffleCount();
             
             // 初期値を入力欄に設定
             initialWords.forEach((word, index) => {
@@ -1012,31 +1341,83 @@
             document.querySelector('.close-perfect').addEventListener('click', closePerfect);
         });
 
+        function loadShuffleCount() {
+            shuffleCount = parseInt(localStorage.getItem('shuffleCount') || '0');
+            document.getElementById('shuffleCount').textContent = shuffleCount;
+        }
+
+        function incrementShuffleCount() {
+            shuffleCount++;
+            localStorage.setItem('shuffleCount', shuffleCount);
+            document.getElementById('shuffleCount').textContent = shuffleCount;
+        }
+
+        function saveToKoderaHistory(text, isPerfect = false) {
+            let history = JSON.parse(localStorage.getItem('koderaHistory') || '[]');
+            
+            // 新しい履歴アイテムを追加
+            const item = {
+                text: text,
+                timestamp: new Date().toLocaleString('ja-JP'),
+                isPerfect: isPerfect
+            };
+            
+            history.unshift(item); // 先頭に追加
+            
+            localStorage.setItem('koderaHistory', JSON.stringify(history));
+            displayKoderaHistory();
+        }
+
+        function displayKoderaHistory() {
+            const history = JSON.parse(localStorage.getItem('koderaHistory') || '[]');
+            const historyList = document.getElementById('koderaHistoryList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-empty">まだ小寺チャンスが出ていません</div>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="kodera-history-item ${item.isPerfect ? 'perfect' : ''}">
+                    <div class="kodera-history-text">${item.text}</div>
+                    ${item.isPerfect ? '<span class="kodera-history-badge">PERFECT</span>' : ''}
+                    <div class="kodera-history-time">${item.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearKoderaHistory() {
+            if (confirm('小寺チャンス履歴をすべて削除しますか？')) {
+                localStorage.removeItem('koderaHistory');
+                displayKoderaHistory();
+            }
+        }
+
         function createFireworks() {
             const container = document.getElementById('koderaPerfect');
             const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493'];
             
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     const firework = document.createElement('div');
                     firework.className = 'firework';
                     firework.style.left = Math.random() * 100 + '%';
                     firework.style.top = Math.random() * 100 + '%';
                     firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    firework.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
-                    firework.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                    firework.style.setProperty('--tx', (Math.random() - 0.5) * 400 + 'px');
+                    firework.style.setProperty('--ty', (Math.random() - 0.5) * 400 + 'px');
                     container.appendChild(firework);
                     
                     setTimeout(() => firework.remove(), 1000);
-                }, i * 50);
+                }, i * 30);
             }
         }
 
         function createStars() {
             const container = document.getElementById('koderaPerfect');
-            const starEmojis = ['⭐', '✨', '🌟', '💫'];
+            const starEmojis = ['⭐', '✨', '🌟', '💫', '⚡', '💥'];
             
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
@@ -1049,9 +1430,9 @@
 
         function createConfetti() {
             const container = document.getElementById('koderaPerfect');
-            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493'];
+            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493', '#00ffff', '#ff00ff'];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 200; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
@@ -1059,6 +1440,35 @@
                 confetti.style.animationDelay = Math.random() * 3 + 's';
                 confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 container.appendChild(confetti);
+            }
+        }
+
+        function createLasers() {
+            const container = document.getElementById('koderaPerfect');
+            for (let i = 0; i < 10; i++) {
+                const laser = document.createElement('div');
+                laser.className = 'laser';
+                laser.style.animationDelay = i * 0.2 + 's';
+                container.appendChild(laser);
+            }
+        }
+
+        function createFlash() {
+            const container = document.getElementById('koderaPerfect');
+            const flash = document.createElement('div');
+            flash.className = 'flash';
+            container.appendChild(flash);
+        }
+
+        function createRings() {
+            const container = document.getElementById('koderaPerfect');
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const ring = document.createElement('div');
+                    ring.className = 'ring';
+                    container.appendChild(ring);
+                    setTimeout(() => ring.remove(), 2000);
+                }, i * 400);
             }
         }
 
@@ -1070,6 +1480,9 @@
             createFireworks();
             createStars();
             createConfetti();
+            createLasers();
+            createFlash();
+            createRings();
             
             // 花火を継続的に発生
             const fireworkInterval = setInterval(() => {
@@ -1078,7 +1491,16 @@
                 } else {
                     clearInterval(fireworkInterval);
                 }
-            }, 1000);
+            }, 800);
+
+            // リングを継続的に発生
+            const ringInterval = setInterval(() => {
+                if (perfectElement.classList.contains('show')) {
+                    createRings();
+                } else {
+                    clearInterval(ringInterval);
+                }
+            }, 2000);
         }
 
         function closePerfect() {
@@ -1086,7 +1508,7 @@
             perfectElement.classList.remove('show');
             
             // エフェクトをクリア
-            const effects = perfectElement.querySelectorAll('.firework, .star, .confetti');
+            const effects = perfectElement.querySelectorAll('.firework, .star, .confetti, .laser, .flash, .ring');
             effects.forEach(el => el.remove());
         }
 
@@ -1259,20 +1681,25 @@
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
+            // シャッフルカウントを増やす
+            incrementShuffleCount();
+            
             // パーフェクト判定（小寺ハミルトンゲイリー）
             if (resultText === '小寺ハミルトンゲイリー' || resultText === '小寺・ハミルトンゲイリー') {
                 showPerfect();
+                saveToKoderaHistory(resultText, true);
             }
             // 小寺チャンス判定
             else if (resultText.startsWith('小寺')) {
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.add('show');
+                saveToKoderaHistory(resultText, false);
             } else {
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.remove('show');
             }
             
-            // 履歴に保存
+            // 通常履歴に保存
             saveToHistory(resultText);
         }
 
