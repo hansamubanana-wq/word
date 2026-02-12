@@ -928,10 +928,8 @@
                 koderaChanceElement.classList.remove('show');
             }
             
-            // 履歴に保存（自動シャッフル時は保存しない）
-            if (!isAutoShuffling) {
-                saveToHistory(resultText);
-            }
+            // 履歴に保存
+            saveToHistory(resultText);
         }
 
         function clearAll() {
