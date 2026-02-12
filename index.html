@@ -479,6 +479,26 @@
             z-index: 1;
         }
 
+        /* デバッグ用パネル */
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 999999;
+            max-width: 300px;
+            word-wrap: break-word;
+            cursor: pointer;
+        }
+
+        .debug-panel:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
         /* モーダル共通 */
         .modal-overlay {
             display: none;
@@ -1160,6 +1180,8 @@
     </style>
 </head>
 <body>
+    <div class="debug-panel" id="debugPanel" onclick="this.style.display='none'">デバッグ情報（クリックで非表示）</div>
+    
     <div class="container">
         <div class="header-buttons">
             <button class="header-btn shop-btn" onclick="openShop()">🛒 ショップ</button>
@@ -1370,6 +1392,15 @@
 
         const ALL_KODERA_COMBINATIONS = generateAllKoderaCombinations();
 
+        // デバッグ関数
+        function updateDebug(message) {
+            const panel = document.getElementById('debugPanel');
+            if (panel) {
+                const now = new Date().toLocaleTimeString();
+                panel.innerHTML = `${now}<br>${message}`;
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
             loadData();
             displayAlbum();
@@ -1443,12 +1474,21 @@
         }
 
         function openShop() {
+            updateDebug('openShop: 開始');
+            
             // 既にモーダルが開いている場合は何もしない
             if (document.getElementById('shopModal').classList.contains('show')) {
+                updateDebug('openShop: 既に開いている');
                 return;
             }
             
+            updateDebug('openShop: モーダル取得中');
             const list = document.getElementById('shopList');
+            const modal = document.getElementById('shopModal');
+            const card = modal.querySelector('.modal-card');
+            
+            updateDebug(`openShop: list=${!!list}, modal=${!!modal}, card=${!!card}`);
+            
             document.getElementById('shopKpDisplay').textContent = shuffleCount;
             
             list.innerHTML = SHOP_ITEMS.map(item => {
@@ -1510,6 +1550,18 @@
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
             document.body.style.width = '100%';
+            
+            // 詳細なスタイル情報をチェック
+            const cardStyle = window.getComputedStyle(card);
+            const modalStyle = window.getComputedStyle(modal);
+            
+            updateDebug(`
+                モーダル: display=${modalStyle.display}, z-index=${modalStyle.zIndex}<br>
+                カード: display=${cardStyle.display}, z-index=${cardStyle.zIndex}<br>
+                カード位置: top=${cardStyle.top}, left=${cardStyle.left}<br>
+                カードサイズ: width=${cardStyle.width}, height=${cardStyle.height}<br>
+                transform=${cardStyle.transform}
+            `);
         }
 
         function closeShop() {
@@ -1560,12 +1612,15 @@
         }
 
         function setTheme(themeClass) {
+            updateDebug(`setTheme: ${themeClass}`);
             localStorage.setItem('currentTheme', themeClass);
             applyTheme();
             
+            updateDebug('setTheme: モーダル閉じる');
             // モーダルを閉じてから再度開く
             closeShop();
             setTimeout(() => {
+                updateDebug('setTheme: モーダル再度開く');
                 openShop();
             }, 100);
         }
