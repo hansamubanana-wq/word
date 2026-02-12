@@ -24,37 +24,6 @@
             background-position: center;
             background-attachment: fixed;
             position: relative;
-            overflow-x: hidden;
-        }
-
-        /* フィーバーモード用スタイル */
-        body.fever-mode::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                rgba(255,0,0,0.2), 
-                rgba(255,165,0,0.2), 
-                rgba(255,255,0,0.2), 
-                rgba(0,128,0,0.2), 
-                rgba(0,255,255,0.2), 
-                rgba(0,0,255,0.2), 
-                rgba(128,0,128,0.2)
-            );
-            background-size: 400% 400%;
-            animation: rainbowFever 2s linear infinite;
-            z-index: 9000;
-            pointer-events: none;
-            mix-blend-mode: overlay;
-        }
-
-        @keyframes rainbowFever {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         /* 背景テーマ用クラス */
@@ -80,7 +49,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3); /* 文字を見やすくするため少し暗く */
             z-index: -1;
             pointer-events: none;
         }
@@ -91,6 +60,7 @@
             backdrop-filter: sepia(20%);
         }
         
+        /* ライボルトは少し明るくてもいいかも */
         body.theme-raibolt::before { background: rgba(0, 0, 0, 0.2); }
 
         .container {
@@ -101,26 +71,36 @@
             max-width: 700px;
             width: 100%;
             position: relative;
-            z-index: 1;
         }
 
         /* 画像背景のときはコンテナを透明に */
-        body[class*="theme-"] .container {
+        body.theme-kodera .container,
+        body.theme-gold .container,
+        body.theme-space .container,
+        body.theme-jurassic .container,
+        body.theme-fire .container,
+        body.theme-raibolt .container,
+        body.theme-mecha .container {
             background: rgba(255, 255, 255, 0.05);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* 文字色調整 */
+        /* 文字色調整（白文字化） */
         body[class*="theme-"] h1,
         body[class*="theme-"] .result-label,
         body[class*="theme-"] .result-text,
-        body[class*="theme-"] .user-name,
+        body[class*="theme-"] .user-name {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* ラベル関連の白文字化 */
         body[class*="theme-"] .speed-selector label,
         body[class*="theme-"] .auto-shuffle-label {
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         /* セクション共通背景（テーマ適用時） */
@@ -137,6 +117,7 @@
             color: white;
         }
         
+        /* マイページ内のステータスボックス調整 */
         body[class*="theme-"] .status-item,
         body[class*="theme-"] .shop-item {
             background: rgba(255, 255, 255, 0.85);
@@ -615,10 +596,6 @@
         }
 
         .kodera-chance.show { display: block; }
-        
-        .kodera-chance.fever-trigger {
-            animation: koderaAppear 0.5s, koderaPulse 0.2s infinite, rainbowBorder 0.5s infinite;
-        }
 
         .kodera-chance-text {
             font-size: 40px;
@@ -629,19 +606,6 @@
             position: relative;
             z-index: 1;
         }
-        
-        .fever-text-display {
-            font-size: 20px;
-            color: #ff00de;
-            font-weight: bold;
-            text-shadow: 0 0 5px #fff;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .fever-mode .fever-text-display { display: block; animation: blink 0.2s infinite; }
-
-        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .kodera-chance-emoji {
             font-size: 56px;
@@ -728,28 +692,6 @@
         }
 
         .kodera-perfect.show { display: flex; }
-        
-        /* カットイン用のアニメーション */
-        .cut-in-text {
-            position: absolute;
-            font-size: 120px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 20px #000;
-            opacity: 0;
-            transform: scale(3);
-            z-index: 10001;
-        }
-        
-        .cut-in-image {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            z-index: 10000;
-            mix-blend-mode: luminosity;
-        }
 
         .kodera-perfect::before {
             content: '';
@@ -910,7 +852,6 @@
             position: relative;
             text-align: center;
             animation: zoomInOut 2s ease-in-out infinite;
-            z-index: 10002;
         }
 
         .kodera-perfect-title {
@@ -1049,14 +990,6 @@
         @keyframes koderaPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        
-        /* カットイン用のアニメーション定義 */
-        @keyframes cutInSlide {
-            0% { opacity: 0; transform: translateX(-100%) skew(-20deg); }
-            20% { opacity: 1; transform: translateX(0) skew(-20deg); }
-            80% { opacity: 1; transform: translateX(0) skew(-20deg); }
-            100% { opacity: 0; transform: translateX(100%) skew(-20deg); }
-        }
 
         .result-label { font-size: 14px; color: #666; margin-bottom: 10px; font-weight: bold; }
         .result-text { font-size: 24px; color: #333; line-height: 1.6; word-break: break-word; }
@@ -1104,8 +1037,6 @@
             .status-grid { grid-template-columns: 1fr; }
             .shop-list { gap: 10px; }
             .shop-item { padding: 10px; gap: 10px; }
-            
-            .cut-in-text { font-size: 60px; }
         }
 
         @media (max-width: 480px) {
@@ -1192,7 +1123,6 @@
         <div class="kodera-chance" id="koderaChance">
             <div class="kodera-chance-emoji">🎉✨🎊</div>
             <div class="kodera-chance-text">小寺チャンス！！</div>
-            <div class="fever-text-display">🔥 FEVER MODE!! KP 3倍! 🔥</div>
             <div class="kodera-chance-bonus">+100 KP GET!</div>
         </div>
 
@@ -1301,10 +1231,6 @@
         let ticketActive = false;
         let inventory = {};
 
-        let feverTimer = null;
-        let isFever = false;
-        let feverEndTime = 0;
-
         let cheatClickCount = 0;
         let cheatClickTimer = null;
 
@@ -1312,6 +1238,7 @@
         const BACK_KODERA_PATH = 'back_kodera.jpg';
         const BACK_GOLD_PATH = 'back_golden_kodera.jpg';
         
+        // 新しい背景画像のパス定義
         const BACK_SPACE_PATH = 'back_space_kodera.jpg';
         const BACK_JURASSIC_PATH = 'back_jurassic_kodera.jpg';
         const BACK_FIRE_PATH = 'back_fire_kodera.jpg';
@@ -1328,6 +1255,7 @@
             { id: 'ticket_kodera_300', name: '🎫 小寺確定チケット×300', desc: '300枚まとめ買い！業者向け超お得セット', price: 1000000, type: 'consumable_bulk', amount: 300 },
             { id: 'title_wife', name: '💍 称号「小寺の妻」', desc: '永遠の愛の証。マイページに表示されます', price: 10000, type: 'title' },
             
+            // 背景アイテム
             { id: 'bg_kodera', name: '🖼️ 小寺さん背景', desc: '常に小寺さんに見守られます', price: 100000, type: 'theme', themeClass: 'theme-kodera' },
             { id: 'bg_gold', name: '👑 黄金の小寺背景', desc: '圧倒的な成金感と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-gold' },
             { id: 'bg_space', name: '🌌 スペース小寺背景', desc: '宇宙の神秘と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-space' },
@@ -1403,13 +1331,9 @@
             }
         }
 
-        function incrementShuffleCount(amount = 1) {
-            let add = amount;
-            if (isFever) {
-                add *= 3; // フィーバー中は3倍
-            }
-            shuffleCount += add;
-            totalShuffleCount += add;
+        function incrementShuffleCount() {
+            shuffleCount++;
+            totalShuffleCount++;
             saveData();
             updateStats();
             renderShop();
@@ -1435,20 +1359,6 @@
                 
                 cheatClickCount = 0;
             }
-        }
-
-        function triggerFever() {
-            isFever = true;
-            document.body.classList.add('fever-mode');
-            
-            // 既存のタイマーがあればクリア
-            if (feverTimer) clearTimeout(feverTimer);
-            
-            // 10秒後にフィーバー終了
-            feverTimer = setTimeout(() => {
-                isFever = false;
-                document.body.classList.remove('fever-mode');
-            }, 10000);
         }
 
         function renderShop() {
@@ -1556,10 +1466,7 @@
         function applyTheme() {
             const theme = localStorage.getItem('currentTheme');
             document.body.className = theme || '';
-            document.body.style.backgroundImage = ''; 
-
-            // クラスにfever-modeが含まれている場合は維持する（ただしclassName書き換えで消えるので再付与必要）
-            if (isFever) document.body.classList.add('fever-mode');
+            document.body.style.backgroundImage = ''; // リセット
 
             if (theme === 'theme-kodera') {
                 document.body.style.backgroundImage = `url('${BACK_KODERA_PATH}')`;
@@ -1914,58 +1821,10 @@
                 }, i * (targetId === 'koderaComplete' ? 200 : 400));
             }
         }
-        
-        // カットイン演出を実行する関数
-        function playCutInSequence(targetId) {
-            const container = document.getElementById(targetId);
-            
-            // 既存の要素があれば削除
-            const oldCutIns = container.querySelectorAll('.cut-in-text, .cut-in-image');
-            oldCutIns.forEach(el => el.remove());
-
-            const chars = ['K', 'O', 'D', 'E', 'R', 'A'];
-            let delay = 0;
-            
-            chars.forEach((char, index) => {
-                setTimeout(() => {
-                    const el = document.createElement('div');
-                    el.className = 'cut-in-text';
-                    el.textContent = char;
-                    el.style.left = (15 + index * 12) + '%';
-                    el.style.top = '40%';
-                    el.style.animation = 'cutInSlide 0.5s ease-out forwards';
-                    container.appendChild(el);
-                    
-                    // 音があればここで再生
-                }, delay);
-                delay += 200;
-            });
-            
-            // 最後に画像をドーン
-            setTimeout(() => {
-                const img = document.createElement('img');
-                img.className = 'cut-in-image';
-                img.src = PERFECT_IMAGE_PATH;
-                img.style.animation = 'zoomInOut 0.5s ease-out forwards, flash 0.5s';
-                img.style.opacity = '1';
-                container.appendChild(img);
-            }, delay + 500);
-        }
 
         function showPerfect() {
-            // オートシャッフル強制停止（神速対策）
-            if (isAutoShuffling) {
-                toggleAutoShuffle(); // 停止
-                // 念のためインターバルもクリア
-                clearInterval(autoShuffleInterval);
-                autoShuffleInterval = null;
-            }
-
             const perfectElement = document.getElementById('koderaPerfect');
             perfectElement.classList.add('show');
-            
-            // カットイン演出開始
-            playCutInSequence('koderaPerfect');
             
             createFireworks('koderaPerfect');
             createStars('koderaPerfect');
@@ -2000,7 +1859,8 @@
             completeElement.classList.add('show');
             
             // コンプリートボーナス！10万KP
-            incrementShuffleCount(100000);
+            shuffleCount += 100000;
+            saveData();
             
             if (isAutoShuffling) {
                 toggleAutoShuffle();
@@ -2034,7 +1894,7 @@
         function closePerfect() {
             const perfectElement = document.getElementById('koderaPerfect');
             perfectElement.classList.remove('show');
-            const effects = perfectElement.querySelectorAll('.firework, .star, .confetti, .laser, .flash, .ring, .cut-in-text, .cut-in-image');
+            const effects = perfectElement.querySelectorAll('.firework, .star, .confetti, .laser, .flash, .ring');
             effects.forEach(el => el.remove());
         }
 
@@ -2101,26 +1961,22 @@
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
-            incrementShuffleCount(1);
+            incrementShuffleCount();
             
             if (resultText === '小寺ハミルトンゲイリー' || resultText === '小寺・ハミルトンゲイリー') {
                 // パーフェクト！ボーナス1000 KP
-                incrementShuffleCount(1000);
-                showPerfect(); // ここでオートストップする
+                shuffleCount += 1000;
+                saveData();
+                showPerfect();
                 saveToKoderaHistory(resultText, true);
                 unlockInAlbum(resultText);
             }
             else if (resultText.startsWith('小寺')) {
                 // 小寺チャンス！ボーナス100 KP
-                incrementShuffleCount(100);
+                shuffleCount += 100;
+                saveData();
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.add('show');
-                
-                // フィーバーモード発動！！
-                triggerFever();
-                koderaChanceElement.classList.add('fever-trigger');
-                setTimeout(() => koderaChanceElement.classList.remove('fever-trigger'), 1000);
-
                 saveToKoderaHistory(resultText, false);
                 unlockInAlbum(resultText);
             } else {
