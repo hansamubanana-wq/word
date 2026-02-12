@@ -1548,8 +1548,6 @@
 
             document.getElementById('shopModal').classList.add('show');
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
             
             // 詳細なスタイル情報をチェック
             const cardStyle = window.getComputedStyle(card);
@@ -1567,8 +1565,6 @@
         function closeShop() {
             document.getElementById('shopModal').classList.remove('show');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
         }
 
         function buyItem(itemId) {
@@ -1791,16 +1787,12 @@
             updateStats();
             document.getElementById('accountModal').classList.add('show');
             document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
         }
 
         function closeAccount() {
             document.getElementById('accountModal').classList.remove('show');
             document.getElementById('emojiPicker').classList.remove('show');
             document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.width = '';
         }
 
         function editName() {
