@@ -412,6 +412,10 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             transform: translateY(20px);
             transition: transform 0.3s;
+            /* ★★★ スマホスクロール対策 ★★★ */
+            max-height: 85vh; /* 画面の高さの85%まで */
+            overflow-y: auto; /* はみ出たらスクロール */
+            -webkit-overflow-scrolling: touch; /* iOSで滑らかに */
         }
 
         .modal-overlay.show .account-card {
@@ -442,6 +446,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.3s;
+            z-index: 10;
         }
 
         .close-modal:hover {
@@ -466,6 +471,13 @@
             border: 4px solid rgba(255,255,255,0.5);
             cursor: pointer;
             transition: transform 0.2s;
+            overflow: hidden; /* 画像がはみ出ないように */
+        }
+
+        .user-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-icon:hover {
@@ -486,6 +498,7 @@
             justify-content: center;
             font-size: 14px;
             border: 2px solid white;
+            pointer-events: none;
         }
 
         .user-name {
@@ -560,6 +573,10 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
+            /* 少し手前に出す */
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .emoji-picker.show {
@@ -572,10 +589,32 @@
             padding: 5px;
             border-radius: 5px;
             transition: background 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .emoji-option:hover {
             background: #f0f0f0;
+        }
+
+        .image-upload-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .image-upload-btn:hover {
+            background: #e0e0e0;
         }
 
         /* パーフェクト演出 */
@@ -1552,10 +1591,13 @@
             <div class="account-card">
                 <div class="account-header">
                     <button class="close-modal" onclick="closeAccount()">✕</button>
+                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                    
                     <div class="user-icon-wrapper" onclick="toggleEmojiPicker()">
                         <div class="user-icon" id="userIcon">👤</div>
                         <div class="edit-icon-badge">✎</div>
                     </div>
+                    
                     <div class="emoji-picker" id="emojiPicker">
                         <span class="emoji-option" onclick="changeIcon('👤')">👤</span>
                         <span class="emoji-option" onclick="changeIcon('👦')">👦</span>
@@ -1563,11 +1605,9 @@
                         <span class="emoji-option" onclick="changeIcon('🏀')">🏀</span>
                         <span class="emoji-option" onclick="changeIcon('😎')">😎</span>
                         <span class="emoji-option" onclick="changeIcon('🐵')">🐵</span>
-                        <span class="emoji-option" onclick="changeIcon('🤖')">🤖</span>
-                        <span class="emoji-option" onclick="changeIcon('🎲')">🎲</span>
-                        <span class="emoji-option" onclick="changeIcon('⭐')">⭐</span>
-                        <span class="emoji-option" onclick="changeIcon('👑')">👑</span>
+                        <button class="image-upload-btn" onclick="triggerImageUpload()">🖼️ 画像を選択</button>
                     </div>
+
                     <div class="user-name">
                         <span id="userName">名無しの小寺ファン</span>
                         <button class="edit-name-btn" onclick="editName()">✎</button>
@@ -1691,7 +1731,7 @@
             displayKoderaHistory();
             loadShuffleCount();
             displayAlbum();
-            loadProfile(); // プロフィール読み込み
+            loadProfile();
 
             if (PERFECT_IMAGE_PATH) {
                 document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
@@ -1701,6 +1741,9 @@
 
             document.querySelector('.close-perfect').addEventListener('click', closePerfect);
             document.querySelector('.close-complete').addEventListener('click', closeComplete);
+            
+            // 画像アップロードのイベントリスナー
+            document.getElementById('profileImageInput').addEventListener('change', handleImageUpload);
         });
 
         function changeSpeed() {
@@ -1834,19 +1877,30 @@
         /* アカウント関連の機能 */
         function loadProfile() {
             const name = localStorage.getItem('userName') || '名無しの小寺ファン';
-            const icon = localStorage.getItem('userIcon') || '👤';
             document.getElementById('userName').textContent = name;
-            document.getElementById('userIcon').textContent = icon;
+            
+            // 画像優先、なければアイコン
+            const customImage = localStorage.getItem('userImage');
+            const iconWrapper = document.getElementById('userIcon');
+            
+            if (customImage) {
+                iconWrapper.innerHTML = `<img src="${customImage}" alt="User Icon">`;
+            } else {
+                const icon = localStorage.getItem('userIcon') || '👤';
+                iconWrapper.textContent = icon;
+            }
         }
 
         function openAccount() {
             updateStats();
             document.getElementById('accountModal').classList.add('show');
+            document.body.style.overflow = 'hidden'; // 背景スクロール防止
         }
 
         function closeAccount() {
             document.getElementById('accountModal').classList.remove('show');
             document.getElementById('emojiPicker').classList.remove('show');
+            document.body.style.overflow = ''; // スクロール復活
         }
 
         function editName() {
@@ -1865,8 +1919,49 @@
 
         function changeIcon(emoji) {
             localStorage.setItem('userIcon', emoji);
-            document.getElementById('userIcon').textContent = emoji;
+            localStorage.removeItem('userImage'); // カスタム画像を削除
+            loadProfile(); // 再描画
             toggleEmojiPicker();
+        }
+
+        // 画像アップロード処理
+        function triggerImageUpload() {
+            document.getElementById('profileImageInput').click();
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // 画像をリサイズして保存（容量削減のため）
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 正方形にクロップ
+                    const size = Math.min(img.width, img.height);
+                    const x = (img.width - size) / 2;
+                    const y = (img.height - size) / 2;
+                    
+                    // アイコンサイズ（150x150）
+                    canvas.width = 150;
+                    canvas.height = 150;
+                    
+                    ctx.drawImage(img, x, y, size, size, 0, 0, 150, 150);
+                    
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    localStorage.setItem('userImage', dataURL);
+                    localStorage.removeItem('userIcon'); // 絵文字設定を削除
+                    loadProfile(); // 更新
+                    toggleEmojiPicker(); // ピッカー閉じる
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function updateStats() {
