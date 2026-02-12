@@ -19,6 +19,36 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background 0.5s;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        /* 背景テーマ用クラス */
+        body.theme-dark { background: #1a1a1a; }
+        body.theme-gold { background-color: #ffd700; }
+        body.theme-cyber { background: linear-gradient(45deg, #000428 0%, #004e92 100%); }
+        body.theme-kodera { background-color: #333; }
+
+        /* 画像背景の時のオーバーレイ */
+        body.theme-kodera::before,
+        body.theme-gold::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        body.theme-gold::before {
+            background: rgba(255, 215, 0, 0.1); 
+            backdrop-filter: sepia(50%);
         }
 
         .container {
@@ -31,11 +61,18 @@
             position: relative;
         }
 
-        /* マイページボタン */
-        .mypage-btn {
+        /* 右上のボタン群 */
+        .header-buttons {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .header-btn {
             background: rgba(102, 126, 234, 0.1);
             color: #667eea;
             border: 2px solid #667eea;
@@ -50,28 +87,27 @@
             gap: 5px;
         }
 
-        .mypage-btn:hover {
-            background: #667eea;
-            color: white;
-        }
+        .header-btn:hover { background: #667eea; color: white; }
+
+        .shop-btn { border-color: #ff6b00; color: #ff6b00; background: rgba(255, 107, 0, 0.1); }
+        .shop-btn:hover { background: #ff6b00; color: white; }
 
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
             font-size: 28px;
-            margin-top: 10px;
+            margin-top: 30px;
+            cursor: default;
+            user-select: none; /* 連打しても選択されないように */
         }
+        
+        /* 隠しコマンド用のアクティブ効果 */
+        h1:active { transform: scale(0.98); }
 
-        .input-section {
-            margin-bottom: 30px;
-        }
+        .input-section { margin-bottom: 30px; }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .button-group { display: flex; gap: 10px; flex-wrap: wrap; }
 
         .auto-shuffle-container {
             display: flex;
@@ -84,18 +120,8 @@
             flex-wrap: wrap;
         }
 
-        .speed-selector {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .speed-selector label {
-            font-size: 12px;
-            color: #666;
-            font-weight: bold;
-        }
-
+        .speed-selector { display: flex; gap: 5px; align-items: center; }
+        .speed-selector label { font-size: 12px; color: #666; font-weight: bold; }
         .speed-selector select {
             padding: 8px 12px;
             border: 2px solid #667eea;
@@ -123,11 +149,7 @@
             margin-bottom: 20px;
         }
 
-        .album-title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
+        .album-title { font-size: 24px; font-weight: bold; }
         .album-progress {
             font-size: 16px;
             background: rgba(255, 255, 255, 0.2);
@@ -155,14 +177,8 @@
             transition: all 0.3s;
         }
 
-        .page-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .page-btn.active {
-            background: white;
-            color: #667eea;
-        }
+        .page-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .page-btn.active { background: white; color: #667eea; }
 
         .album-grid {
             display: grid;
@@ -215,9 +231,7 @@
             font-size: 12px;
         }
 
-        .album-card-lock {
-            font-size: 24px;
-        }
+        .album-card-lock { font-size: 24px; }
 
         .clear-album-btn {
             padding: 10px 20px;
@@ -237,26 +251,14 @@
         }
 
         @keyframes cardUnlock {
-            0% {
-                transform: scale(0.5) rotate(-180deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2) rotate(10deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         @keyframes perfectCard {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 0, 222, 1);
-            }
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 222, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 222, 1); }
         }
 
         .auto-shuffle-toggle {
@@ -284,19 +286,11 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
-            }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
         }
 
-        .auto-shuffle-label {
-            font-size: 14px;
-            color: #666;
-            font-weight: bold;
-        }
+        .auto-shuffle-label { font-size: 14px; color: #666; font-weight: bold; }
 
         button {
             flex: 1;
@@ -321,6 +315,37 @@
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
 
+        /* チケット使用ボタン */
+        .ticket-use-container {
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .ticket-use-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b00 100%);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
+            border: 2px solid #fff;
+        }
+
+        .ticket-use-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .ticket-use-btn.active {
+            background: #333;
+            border-color: #ffd700;
+            color: #ffd700;
+            animation: pulse 1s infinite;
+        }
+
         .result-section {
             margin-top: 30px;
             padding: 30px;
@@ -330,10 +355,7 @@
             display: none;
         }
 
-        .result-section.show {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
+        .result-section.show { display: block; animation: fadeIn 0.5s; }
 
         .kodera-chance {
             display: none;
@@ -360,9 +382,7 @@
             animation: shine 3s infinite;
         }
 
-        .kodera-chance.show {
-            display: block;
-        }
+        .kodera-chance.show { display: block; }
 
         .kodera-chance-text {
             font-size: 40px;
@@ -383,7 +403,7 @@
             z-index: 1;
         }
 
-        /* アカウントモーダル */
+        /* モーダル共通 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -398,12 +418,9 @@
             padding: 20px;
         }
 
-        .modal-overlay.show {
-            display: flex;
-            animation: fadeIn 0.3s;
-        }
+        .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
 
-        .account-card {
+        .modal-card {
             background: white;
             border-radius: 20px;
             width: 100%;
@@ -412,22 +429,27 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             transform: translateY(20px);
             transition: transform 0.3s;
-            max-height: 85vh; /* 画面の高さの85%まで */
-            overflow-y: auto; /* はみ出たらスクロール */
-            -webkit-overflow-scrolling: touch; /* iOSで滑らかに */
+            max-height: 85vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
         }
 
-        .modal-overlay.show .account-card {
-            transform: translateY(0);
-        }
+        .modal-overlay.show .modal-card { transform: translateY(0); }
 
-        .account-header {
+        .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px 20px;
+            padding: 20px;
             color: white;
             text-align: center;
             position: relative;
+            flex-shrink: 0;
         }
+
+        .shop-header { background: linear-gradient(135deg, #ff6b00 0%, #ffb347 100%); }
+
+        .modal-title { font-size: 20px; font-weight: bold; }
 
         .close-modal {
             position: absolute;
@@ -448,14 +470,14 @@
             z-index: 10;
         }
 
-        .close-modal:hover {
-            background: rgba(255,255,255,0.4);
-        }
+        .close-modal:hover { background: rgba(255,255,255,0.4); }
 
+        /* アカウント関連 */
         .user-icon-wrapper {
             position: relative;
             display: inline-block;
             margin-bottom: 15px;
+            margin-top: 15px;
         }
 
         .user-icon {
@@ -471,17 +493,11 @@
             cursor: pointer;
             transition: transform 0.2s;
             overflow: hidden;
+            color: #333;
         }
 
-        .user-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-icon:hover {
-            transform: scale(1.05);
-        }
+        .user-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .user-icon:hover { transform: scale(1.05); }
 
         .edit-icon-badge {
             position: absolute;
@@ -526,7 +542,7 @@
             display: inline-block;
             border: 1px solid rgba(255,255,255,0.3);
         }
-
+        
         .status-grid {
             padding: 20px;
             display: grid;
@@ -549,19 +565,79 @@
             margin: 5px 0;
         }
 
-        .status-label {
-            font-size: 12px;
-            color: #666;
-        }
+        .status-label { font-size: 12px; color: #666; }
 
         .status-item.highlight {
             background: linear-gradient(135deg, #fff6f6 0%, #fff0f0 100%);
             border-color: #ffcccc;
         }
-
-        .status-item.highlight .status-value {
-            color: #e53e3e;
+        .status-item.highlight .status-value { color: #e53e3e; }
+        
+        /* KP表示用 */
+        .status-item.kp-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            border-color: #c3cfe2;
         }
+        .status-item.kp-box .status-value { color: #667eea; }
+
+        /* ショップ関連 */
+        .kp-display {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .shop-list { padding: 20px; display: grid; gap: 15px; }
+
+        .shop-item {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s;
+        }
+        
+        .shop-item:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        .item-icon {
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .item-info { flex: 1; }
+        .item-name { font-weight: bold; font-size: 16px; color: #333; }
+        .item-desc { font-size: 11px; color: #666; margin-top: 2px; }
+
+        .buy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 80px;
+            transition: all 0.2s;
+        }
+        
+        .buy-btn:hover { background: #5a6fd6; transform: scale(1.05); }
+        .buy-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .buy-btn.owned { background: #4caf50; cursor: default; }
+        .buy-btn.apply { background: #ff9800; }
 
         .emoji-picker {
             display: none;
@@ -577,9 +653,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .emoji-picker.show {
-            display: flex;
-        }
+        .emoji-picker.show { display: flex; }
 
         .emoji-option {
             font-size: 24px;
@@ -594,9 +668,7 @@
             justify-content: center;
         }
 
-        .emoji-option:hover {
-            background: #f0f0f0;
-        }
+        .emoji-option:hover { background: #f0f0f0; }
 
         .image-upload-btn {
             width: 100%;
@@ -611,9 +683,7 @@
             font-weight: bold;
         }
 
-        .image-upload-btn:hover {
-            background: #e0e0e0;
-        }
+        .image-upload-btn:hover { background: #e0e0e0; }
 
         /* パーフェクト演出 */
         .kodera-perfect {
@@ -633,9 +703,7 @@
             overflow: hidden;
         }
 
-        .kodera-perfect.show {
-            display: flex;
-        }
+        .kodera-perfect.show { display: flex; }
 
         .kodera-perfect::before {
             content: '';
@@ -664,9 +732,7 @@
             overflow: hidden;
         }
 
-        .kodera-complete.show {
-            display: flex;
-        }
+        .kodera-complete.show { display: flex; }
 
         .kodera-complete-container {
             position: relative;
@@ -736,10 +802,7 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
-        .close-complete:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 30px #ffd700;
-        }
+        .close-complete:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 30px #ffd700; }
 
         @keyframes goldRush {
             0% { background-position: 0% 50%; }
@@ -763,10 +826,7 @@
             to { box-shadow: 0 0 150px #ffd700, 0 0 300px #ff00de, 0 0 500px #fff; }
         }
 
-        @keyframes pulseOverlay {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
+        @keyframes pulseOverlay { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
 
         @keyframes textShake {
             0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
@@ -775,11 +835,8 @@
         }
 
         @keyframes colorChange {
-            0% { color: #ffff00; }
-            25% { color: #ff00ff; }
-            50% { color: #00ffff; }
-            75% { color: #ff0000; }
-            100% { color: #ffff00; }
+            0% { color: #ffff00; } 25% { color: #ff00ff; } 50% { color: #00ffff; }
+            75% { color: #ff0000; } 100% { color: #ffff00; }
         }
 
         @keyframes imageGlow {
@@ -787,33 +844,12 @@
             50% { filter: brightness(1.8) saturate(2) drop-shadow(0 0 100px #ff00de); }
         }
 
-        @keyframes laserSweep {
-            0% { left: -10%; }
-            100% { left: 110%; }
-        }
-
-        @keyframes flash {
-            0%, 90%, 100% { opacity: 0; }
-            95% { opacity: 0.8; }
-        }
+        @keyframes laserSweep { 0% { left: -10%; } 100% { left: 110%; } }
+        @keyframes flash { 0%, 90%, 100% { opacity: 0; } 95% { opacity: 0.8; } }
 
         @keyframes ringExpand {
-            0% {
-                width: 50px;
-                height: 50px;
-                top: 50%;
-                left: 50%;
-                margin: -25px 0 0 -25px;
-                opacity: 1;
-            }
-            100% {
-                width: 800px;
-                height: 800px;
-                top: 50%;
-                left: 50%;
-                margin: -400px 0 0 -400px;
-                opacity: 0;
-            }
+            0% { width: 50px; height: 50px; top: 50%; left: 50%; margin: -25px 0 0 -25px; opacity: 1; }
+            100% { width: 800px; height: 800px; top: 50%; left: 50%; margin: -400px 0 0 -400px; opacity: 0; }
         }
 
         .kodera-perfect-container {
@@ -890,146 +926,40 @@
             z-index: 10000;
         }
 
-        .close-perfect:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: scale(1.1);
-        }
+        .close-perfect:hover { background: rgba(255, 255, 255, 0.6); transform: scale(1.1); }
 
         @keyframes rainbowBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
 
         @keyframes rainbowBorder {
-            0% { border-color: #ff0000; }
-            16% { border-color: #ff7f00; }
-            33% { border-color: #ffff00; }
-            50% { border-color: #00ff00; }
-            66% { border-color: #0000ff; }
-            83% { border-color: #8b00ff; }
+            0% { border-color: #ff0000; } 16% { border-color: #ff7f00; } 33% { border-color: #ffff00; }
+            50% { border-color: #00ff00; } 66% { border-color: #0000ff; } 83% { border-color: #8b00ff; }
             100% { border-color: #ff0000; }
         }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        @keyframes zoomInOut {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
+        @keyframes shine { 0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); } 100% { transform: translateX(100%) translateY(100%) rotate(45deg); } }
+        @keyframes zoomInOut { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         @keyframes textGlow {
             0%, 100% { text-shadow: 0 0 10px #000, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de; }
             50% { text-shadow: 0 0 20px #000, 0 0 30px #fff, 0 0 40px #fff, 0 0 60px #ff00de, 0 0 100px #ff00de, 0 0 120px #ff00de; }
         }
-
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px) rotate(-5deg); }
-            75% { transform: translateX(10px) rotate(5deg); }
+            0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px) rotate(-5deg); } 75% { transform: translateX(10px) rotate(5deg); }
         }
+        @keyframes rotate3d { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes imagePulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.3); } }
+        @keyframes explode { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)); opacity: 0; } }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(180deg); } }
+        @keyframes fall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes koderaAppear { 0% { transform: scale(0.5) rotate(-5deg); opacity: 0; } 50% { transform: scale(1.1) rotate(5deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        @keyframes koderaPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        @keyframes rotate3d {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        @keyframes imagePulse {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.05); filter: brightness(1.3); }
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty));
-                opacity: 0;
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(180deg); }
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes koderaAppear {
-            0% {
-                transform: scale(0.5) rotate(-5deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1) rotate(5deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-        }
-
-        @keyframes koderaPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .result-label {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .result-text {
-            font-size: 24px;
-            color: #333;
-            line-height: 1.6;
-            word-break: break-word;
-        }
+        .result-label { font-size: 14px; color: #666; margin-bottom: 10px; font-weight: bold; }
+        .result-text { font-size: 24px; color: #333; line-height: 1.6; word-break: break-word; }
 
         /* シャッフルカウンター */
         .shuffle-counter {
@@ -1042,231 +972,71 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .shuffle-counter-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-
-        .shuffle-counter-value {
-            font-size: 32px;
-            font-weight: bold;
-        }
+        .shuffle-counter-label { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+        .shuffle-counter-value { font-size: 32px; font-weight: bold; }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 20px;
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 22px;
-                margin-bottom: 20px;
-            }
-
-            .mypage-btn {
-                position: relative;
-                top: auto;
-                right: auto;
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 15px;
-            }
-
-            .auto-shuffle-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .auto-shuffle-toggle {
-                width: 100%;
-            }
-
-            .auto-shuffle-label {
-                text-align: center;
-            }
-
-            button {
-                padding: 14px;
-                font-size: 15px;
-            }
-
-            .album-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .album-title {
-                font-size: 20px;
-            }
-
-            .album-card-text {
-                font-size: 10px;
-            }
-
-            .result-section {
-                padding: 20px;
-                margin-top: 20px;
-            }
-
-            .kodera-chance {
-                padding: 15px;
-                margin-top: 20px;
-            }
-
-            .kodera-chance-text {
-                font-size: 24px;
-            }
-
-            .kodera-chance-emoji {
-                font-size: 36px;
-            }
-
-            .kodera-perfect-title {
-                font-size: 48px;
-            }
-
-            .kodera-perfect-subtitle {
-                font-size: 28px;
-            }
-
-            .kodera-perfect-image {
-                max-width: 300px;
-                max-height: 300px;
-            }
-
-            .close-perfect {
-                font-size: 18px;
-                padding: 10px 20px;
-            }
-
-            .result-text {
-                font-size: 20px;
-            }
-
-            .shuffle-counter-value {
-                font-size: 28px;
-            }
-            
-            .complete-title {
-                font-size: 48px;
-            }
-            
-            .complete-subtitle {
-                font-size: 24px;
-            }
-            
-            .complete-message {
-                font-size: 16px;
-                padding: 10px 20px;
-            }
-            
-            .complete-image {
-                max-width: 280px;
-                max-height: 280px;
-            }
+            body { padding: 10px; }
+            .container { padding: 20px; max-width: 100%; }
+            h1 { font-size: 22px; margin-bottom: 20px; }
+            .header-buttons { position: relative; top: auto; right: auto; width: 100%; justify-content: center; margin-bottom: 15px; }
+            .auto-shuffle-container { flex-direction: column; align-items: stretch; }
+            .auto-shuffle-toggle { width: 100%; }
+            .auto-shuffle-label { text-align: center; }
+            button { padding: 14px; font-size: 15px; }
+            .album-grid { grid-template-columns: repeat(3, 1fr); }
+            .album-title { font-size: 20px; }
+            .album-card-text { font-size: 10px; }
+            .result-section { padding: 20px; margin-top: 20px; }
+            .kodera-chance { padding: 15px; margin-top: 20px; }
+            .kodera-chance-text { font-size: 24px; }
+            .kodera-chance-emoji { font-size: 36px; }
+            .kodera-perfect-title { font-size: 48px; }
+            .kodera-perfect-subtitle { font-size: 28px; }
+            .kodera-perfect-image { max-width: 300px; max-height: 300px; }
+            .close-perfect { font-size: 18px; padding: 10px 20px; }
+            .result-text { font-size: 20px; }
+            .shuffle-counter-value { font-size: 28px; }
+            .complete-title { font-size: 48px; }
+            .complete-subtitle { font-size: 24px; }
+            .complete-message { font-size: 16px; padding: 10px 20px; }
+            .complete-image { max-width: 280px; max-height: 280px; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
-
-            button {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .album-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .album-title {
-                font-size: 18px;
-            }
-
-            .album-card-text {
-                font-size: 9px;
-            }
-
-            .page-btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .kodera-chance-text {
-                font-size: 20px;
-            }
-
-            .kodera-chance-emoji {
-                font-size: 32px;
-            }
-
-            .kodera-perfect-title {
-                font-size: 36px;
-                letter-spacing: 2px;
-            }
-
-            .kodera-perfect-subtitle {
-                font-size: 22px;
-            }
-
-            .kodera-perfect-image {
-                max-width: 250px;
-                max-height: 250px;
-            }
-
-            .close-perfect {
-                font-size: 16px;
-                padding: 8px 16px;
-                top: 10px;
-                right: 10px;
-            }
-
-            .result-text {
-                font-size: 18px;
-            }
-
-            .shuffle-counter-value {
-                font-size: 24px;
-            }
-
-            .complete-title {
-                font-size: 36px;
-            }
-            
-            .complete-subtitle {
-                font-size: 18px;
-            }
-            
-            .complete-message {
-                font-size: 14px;
-                padding: 8px 15px;
-            }
-            
-            .complete-image {
-                max-width: 220px;
-                max-height: 220px;
-            }
-
-            .status-grid {
-                grid-template-columns: 1fr;
-            }
+            .container { padding: 15px; }
+            h1 { font-size: 20px; }
+            button { padding: 12px; font-size: 14px; }
+            .album-grid { grid-template-columns: repeat(2, 1fr); }
+            .album-title { font-size: 18px; }
+            .album-card-text { font-size: 9px; }
+            .page-btn { padding: 8px 12px; font-size: 12px; }
+            .kodera-chance-text { font-size: 20px; }
+            .kodera-chance-emoji { font-size: 32px; }
+            .kodera-perfect-title { font-size: 36px; letter-spacing: 2px; }
+            .kodera-perfect-subtitle { font-size: 22px; }
+            .kodera-perfect-image { max-width: 250px; max-height: 250px; }
+            .close-perfect { font-size: 16px; padding: 8px 16px; top: 10px; right: 10px; }
+            .result-text { font-size: 18px; }
+            .shuffle-counter-value { font-size: 24px; }
+            .complete-title { font-size: 36px; }
+            .complete-subtitle { font-size: 18px; }
+            .complete-message { font-size: 14px; padding: 8px 15px; }
+            .complete-image { max-width: 220px; max-height: 220px; }
+            .status-grid { grid-template-columns: 1fr; }
+            .shop-list { padding: 10px; gap: 10px; }
+            .shop-item { padding: 10px; gap: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <button class="mypage-btn" onclick="openAccount()">👤 マイページ</button>
+        <div class="header-buttons">
+            <button class="header-btn shop-btn" onclick="openShop()">🛒 ショップ</button>
+            <button class="header-btn" onclick="openAccount()">👤 マイページ</button>
+        </div>
 
-        <h1>🎲 小寺ハミルトンゲイリー ガチャ</h1>
+        <h1 onclick="handleCheatClick()">🎲 小寺ハミルトンゲイリー ガチャ</h1>
         
         <div class="input-section">
             <div class="auto-shuffle-container">
@@ -1290,6 +1060,13 @@
             <div class="button-group">
                 <button class="shuffle-btn" onclick="shuffleWords()">シャッフル！</button>
             </div>
+
+            <div class="ticket-use-container" id="ticketContainer">
+                <button class="ticket-use-btn" id="ticketBtn" onclick="toggleTicket()">
+                    <span>🎫 小寺確定チケット使用</span>
+                    <span id="ticketCountLabel">(所持: 0枚)</span>
+                </button>
+            </div>
         </div>
 
         <div class="kodera-complete" id="koderaComplete">
@@ -1312,8 +1089,8 @@
         </div>
 
         <div class="modal-overlay" id="accountModal">
-            <div class="account-card">
-                <div class="account-header">
+            <div class="modal-card">
+                <div class="modal-header">
                     <button class="close-modal" onclick="closeAccount()">✕</button>
                     <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
                     
@@ -1339,9 +1116,13 @@
                     <div class="user-rank" id="userRank">ランク: 見習い小寺</div>
                 </div>
                 <div class="status-grid">
+                    <div class="status-item kp-box">
+                        <div class="status-label">現在の所持 KP</div>
+                        <div class="status-value" id="statsCurrentKP">0</div>
+                    </div>
                     <div class="status-item">
-                        <div class="status-label">シャッフル回数</div>
-                        <div class="status-value" id="statsShuffleCount">0</div>
+                        <div class="status-label">累計獲得 KP</div>
+                        <div class="status-value" id="statsTotalShuffleCount">0</div>
                     </div>
                     <div class="status-item">
                         <div class="status-label">アルバム収集率</div>
@@ -1363,6 +1144,18 @@
             </div>
         </div>
 
+        <div class="modal-overlay" id="shopModal">
+            <div class="modal-card">
+                <div class="modal-header shop-header">
+                    <button class="close-modal" onclick="closeShop()">✕</button>
+                    <div class="modal-title">🛒 小寺ショップ</div>
+                    <div class="kp-display">所持KP: <span id="shopKpDisplay">0</span></div>
+                </div>
+                <div class="shop-list" id="shopList">
+                    </div>
+            </div>
+        </div>
+
         <div class="kodera-chance" id="koderaChance">
             <div class="kodera-chance-emoji">🎉✨🎊</div>
             <div class="kodera-chance-text">小寺チャンス！！</div>
@@ -1374,7 +1167,7 @@
         </div>
 
         <div class="shuffle-counter">
-            <div class="shuffle-counter-label">シャッフル回数</div>
+            <div class="shuffle-counter-label">現在の所持ポイント (KP)</div>
             <div class="shuffle-counter-value" id="shuffleCount">0</div>
         </div>
 
@@ -1399,19 +1192,37 @@
     <script>
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
-        let shuffleCount = 0;
+        let shuffleCount = 0; // 現在のポイント (KP)
+        let totalShuffleCount = 0; // 累計シャッフル回数
         let currentPage = 1;
         let currentSpeed = 500;
+        let ticketActive = false;
+        let inventory = {}; // 購入済みアイテム
 
-        // ★★★ 画像のパスをここに設定してください ★★★
+        // 隠しコマンド用
+        let cheatClickCount = 0;
+        let cheatClickTimer = null;
+
+        // 画像パス設定
         const PERFECT_IMAGE_PATH = 'kodera.jpg';
+        const BACK_KODERA_PATH = 'back_kodera.jpg';
+        const BACK_GOLD_PATH = 'back_golden_kodera.jpg';
 
         const FIXED_WORDS = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
+
+        const SHOP_ITEMS = [
+            { id: 'speed_god', name: '⚡ 神速モード (0.01秒)', desc: '限界を超えた速さでシャッフルします', price: 25000, type: 'unlock' },
+            { id: 'ticket_kodera', name: '🎫 小寺確定チケット', desc: '次回必ず「小寺」から始まります', price: 5000, type: 'consumable' },
+            { id: 'title_oilking', name: '📛 称号「小寺石油王」', desc: '富の象徴。マイページに表示されます', price: 10000, type: 'title' },
+            { id: 'bg_dark', name: '🌑 ダークモード背景', desc: '目に優しい暗黒のテーマ', price: 15000, type: 'theme', themeClass: 'theme-dark' },
+            { id: 'bg_cyber', name: '🤖 サイバーパンク背景', desc: '近未来的なネオンカラー', price: 100000, type: 'theme', themeClass: 'theme-cyber' },
+            { id: 'bg_kodera', name: '🖼️ 小寺さん背景', desc: '常に小寺さんに見守られます', price: 100000, type: 'theme', themeClass: 'theme-kodera' },
+            { id: 'bg_gold', name: '👑 黄金の小寺背景', desc: '圧倒的な成金感と小寺さん', price: 250000, type: 'theme', themeClass: 'theme-gold' }
+        ];
 
         function generateAllKoderaCombinations() {
             const remaining = ['・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
             const combinations = [];
-            
             function permute(arr, prefix = []) {
                 if (arr.length === 0) {
                     combinations.push('小寺' + prefix.join(''));
@@ -1422,7 +1233,6 @@
                     permute(newArr, prefix.concat(arr[i]));
                 }
             }
-            
             permute(remaining);
             return combinations;
         }
@@ -1430,9 +1240,11 @@
         const ALL_KODERA_COMBINATIONS = generateAllKoderaCombinations();
 
         window.addEventListener('DOMContentLoaded', function() {
-            loadShuffleCount();
+            loadData();
             displayAlbum();
             loadProfile();
+            applyTheme();
+            checkGodSpeed();
 
             if (PERFECT_IMAGE_PATH) {
                 document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
@@ -1442,10 +1254,217 @@
 
             document.querySelector('.close-perfect').addEventListener('click', closePerfect);
             document.querySelector('.close-complete').addEventListener('click', closeComplete);
-            
-            // 画像アップロードのイベントリスナー
             document.getElementById('profileImageInput').addEventListener('change', handleImageUpload);
+            updateTicketDisplay();
         });
+
+        function loadData() {
+            shuffleCount = parseInt(localStorage.getItem('shuffleCount') || '0');
+            document.getElementById('shuffleCount').textContent = shuffleCount;
+            
+            const storedTotal = localStorage.getItem('totalShuffleCount');
+            if (storedTotal === null) {
+                totalShuffleCount = shuffleCount;
+                localStorage.setItem('totalShuffleCount', totalShuffleCount);
+            } else {
+                totalShuffleCount = parseInt(storedTotal);
+            }
+
+            inventory = JSON.parse(localStorage.getItem('inventory') || '{}');
+        }
+
+        function saveData() {
+            localStorage.setItem('shuffleCount', shuffleCount);
+            localStorage.setItem('totalShuffleCount', totalShuffleCount);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            
+            document.getElementById('shuffleCount').textContent = shuffleCount;
+            if (document.getElementById('shopKpDisplay')) {
+                document.getElementById('shopKpDisplay').textContent = shuffleCount;
+            }
+        }
+
+        function incrementShuffleCount() {
+            shuffleCount++;
+            totalShuffleCount++;
+            saveData();
+        }
+
+        // --- 隠しコマンド機能 ---
+        function handleCheatClick() {
+            cheatClickCount++;
+            
+            // 1秒間操作がなければリセット
+            if (cheatClickTimer) clearTimeout(cheatClickTimer);
+            cheatClickTimer = setTimeout(() => {
+                cheatClickCount = 0;
+            }, 1000);
+
+            // 7回クリックで発動
+            if (cheatClickCount >= 7) {
+                const bonus = 1000000;
+                shuffleCount += bonus;
+                totalShuffleCount += bonus; // 累計にも加算するかはお好みで（ここでは加算）
+                saveData();
+                updateStats();
+                
+                alert(`🛠️ デバッグモード発動！\nKPを ${bonus.toLocaleString()} 追加しました！\n現在のKP: ${shuffleCount.toLocaleString()}`);
+                
+                cheatClickCount = 0; // カウンタリセット
+            }
+        }
+
+        // --- ショップ機能 ---
+        function openShop() {
+            const list = document.getElementById('shopList');
+            document.getElementById('shopKpDisplay').textContent = shuffleCount;
+            
+            list.innerHTML = SHOP_ITEMS.map(item => {
+                let btnHtml = '';
+                const isOwned = inventory[item.id] && item.type !== 'consumable';
+                
+                if (item.type === 'theme') {
+                    const currentTheme = localStorage.getItem('currentTheme');
+                    if (isOwned) {
+                        if (currentTheme === item.themeClass) {
+                            btnHtml = `<button class="buy-btn owned">適用中</button>`;
+                        } else {
+                            btnHtml = `<button class="buy-btn apply" onclick="setTheme('${item.themeClass}')">適用する</button>`;
+                        }
+                    } else {
+                        btnHtml = `<button class="buy-btn" onclick="buyItem('${item.id}')" ${shuffleCount < item.price ? 'disabled' : ''}>購入 (${item.price} KP)</button>`;
+                    }
+                } else if (item.type === 'unlock' || item.type === 'title') {
+                    if (isOwned) {
+                        btnHtml = `<button class="buy-btn owned">購入済み</button>`;
+                    } else {
+                        btnHtml = `<button class="buy-btn" onclick="buyItem('${item.id}')" ${shuffleCount < item.price ? 'disabled' : ''}>購入 (${item.price} KP)</button>`;
+                    }
+                } else if (item.type === 'consumable') {
+                    const count = inventory[item.id] || 0;
+                    btnHtml = `<button class="buy-btn" onclick="buyItem('${item.id}')" ${shuffleCount < item.price ? 'disabled' : ''}>購入 (${item.price} KP)<br>所持: ${count}</button>`;
+                }
+
+                let icon = '🎁';
+                if (item.type === 'theme') icon = '🎨';
+                if (item.id.includes('god')) icon = '⚡';
+                if (item.id.includes('ticket')) icon = '🎫';
+                if (item.type === 'title') icon = '📛';
+
+                return `
+                    <div class="shop-item">
+                        <div class="item-icon">${icon}</div>
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-desc">${item.desc}</div>
+                        </div>
+                        ${btnHtml}
+                    </div>
+                `;
+            }).join('');
+
+            if (localStorage.getItem('currentTheme')) {
+                list.innerHTML += `
+                    <div class="shop-item" style="justify-content: center; background: none; border: none;">
+                        <button class="buy-btn apply" style="background: #666;" onclick="setTheme('')">デフォルト背景に戻す</button>
+                    </div>
+                `;
+            }
+
+            document.getElementById('shopModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeShop() {
+            document.getElementById('shopModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function buyItem(itemId) {
+            const item = SHOP_ITEMS.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (shuffleCount >= item.price) {
+                if (!confirm(`${item.name} を ${item.price} KPで購入しますか？`)) return;
+
+                shuffleCount -= item.price;
+                
+                if (item.type === 'consumable') {
+                    inventory[item.id] = (inventory[item.id] || 0) + 1;
+                } else {
+                    inventory[item.id] = true;
+                }
+                
+                saveData();
+                openShop(); 
+                
+                if (item.id === 'speed_god') checkGodSpeed();
+                if (item.id === 'ticket_kodera') updateTicketDisplay();
+                if (item.type === 'title') updateStats();
+                
+                alert('購入しました！');
+            } else {
+                alert('KPが足りません！');
+            }
+        }
+
+        function setTheme(themeClass) {
+            localStorage.setItem('currentTheme', themeClass);
+            applyTheme();
+            openShop();
+        }
+
+        function applyTheme() {
+            const theme = localStorage.getItem('currentTheme');
+            document.body.className = theme || '';
+            
+            if (theme === 'theme-kodera') {
+                document.body.style.backgroundImage = `url('${BACK_KODERA_PATH}')`;
+            } else if (theme === 'theme-gold') {
+                document.body.style.backgroundImage = `url('${BACK_GOLD_PATH}')`;
+            } else {
+                document.body.style.backgroundImage = '';
+            }
+        }
+
+        function checkGodSpeed() {
+            if (inventory['speed_god']) {
+                const select = document.getElementById('speedSelect');
+                if (!select.querySelector('option[value="10"]')) {
+                    const option = document.createElement('option');
+                    option.value = "10";
+                    option.text = "⚡ 神速 (0.01秒)";
+                    select.insertBefore(option, select.firstChild);
+                }
+            }
+        }
+
+        function updateTicketDisplay() {
+            const count = inventory['ticket_kodera'] || 0;
+            const container = document.getElementById('ticketContainer');
+            const label = document.getElementById('ticketCountLabel');
+            
+            if (count > 0) {
+                container.style.display = 'block';
+                label.textContent = `(所持: ${count}枚)`;
+            } else {
+                container.style.display = 'none';
+                ticketActive = false;
+                document.getElementById('ticketBtn').classList.remove('active');
+            }
+        }
+
+        function toggleTicket() {
+            ticketActive = !ticketActive;
+            const btn = document.getElementById('ticketBtn');
+            if (ticketActive) {
+                btn.classList.add('active');
+                btn.querySelector('span').textContent = '🎫 使用中...';
+            } else {
+                btn.classList.remove('active');
+                btn.querySelector('span').textContent = '🎫 小寺確定チケット使用';
+            }
+        }
 
         function changeSpeed() {
             currentSpeed = parseInt(document.getElementById('speedSelect').value);
@@ -1524,17 +1543,6 @@
             }
         }
 
-        function loadShuffleCount() {
-            shuffleCount = parseInt(localStorage.getItem('shuffleCount') || '0');
-            document.getElementById('shuffleCount').textContent = shuffleCount;
-        }
-
-        function incrementShuffleCount() {
-            shuffleCount++;
-            localStorage.setItem('shuffleCount', shuffleCount);
-            document.getElementById('shuffleCount').textContent = shuffleCount;
-        }
-
         function saveToKoderaHistory(text, isPerfect = false) {
             let history = JSON.parse(localStorage.getItem('koderaHistory') || '[]');
             
@@ -1545,17 +1553,13 @@
             };
             
             history.unshift(item);
-            
-            // 画面表示はしないが、データ保存は継続（マイページ統計用）
             localStorage.setItem('koderaHistory', JSON.stringify(history));
         }
 
-        /* アカウント関連の機能 */
         function loadProfile() {
             const name = localStorage.getItem('userName') || '名無しの小寺ファン';
             document.getElementById('userName').textContent = name;
             
-            // 画像優先、なければアイコン
             const customImage = localStorage.getItem('userImage');
             const iconWrapper = document.getElementById('userIcon');
             
@@ -1570,13 +1574,13 @@
         function openAccount() {
             updateStats();
             document.getElementById('accountModal').classList.add('show');
-            document.body.style.overflow = 'hidden'; // 背景スクロール防止
+            document.body.style.overflow = 'hidden';
         }
 
         function closeAccount() {
             document.getElementById('accountModal').classList.remove('show');
             document.getElementById('emojiPicker').classList.remove('show');
-            document.body.style.overflow = ''; // スクロール復活
+            document.body.style.overflow = '';
         }
 
         function editName() {
@@ -1595,12 +1599,11 @@
 
         function changeIcon(emoji) {
             localStorage.setItem('userIcon', emoji);
-            localStorage.removeItem('userImage'); // カスタム画像を削除
-            loadProfile(); // 再描画
+            localStorage.removeItem('userImage');
+            loadProfile();
             toggleEmojiPicker();
         }
 
-        // 画像アップロード処理
         function triggerImageUpload() {
             document.getElementById('profileImageInput').click();
         }
@@ -1611,18 +1614,15 @@
 
             const reader = new FileReader();
             reader.onload = function(event) {
-                // 画像をリサイズして保存（容量削減のため）
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // 正方形にクロップ
                     const size = Math.min(img.width, img.height);
                     const x = (img.width - size) / 2;
                     const y = (img.height - size) / 2;
                     
-                    // アイコンサイズ（150x150）
                     canvas.width = 150;
                     canvas.height = 150;
                     
@@ -1631,9 +1631,9 @@
                     const dataURL = canvas.toDataURL('image/jpeg', 0.8);
                     
                     localStorage.setItem('userImage', dataURL);
-                    localStorage.removeItem('userIcon'); // 絵文字設定を削除
-                    loadProfile(); // 更新
-                    toggleEmojiPicker(); // ピッカー閉じる
+                    localStorage.removeItem('userIcon');
+                    loadProfile();
+                    toggleEmojiPicker();
                 };
                 img.src = event.target.result;
             };
@@ -1641,40 +1641,38 @@
         }
 
         function updateStats() {
-            // データ取得
-            const currentShuffleCount = parseInt(localStorage.getItem('shuffleCount') || '0');
             const album = getUnlockedAlbum();
             const history = JSON.parse(localStorage.getItem('koderaHistory') || '[]');
             
-            // 計算
             const perfectCount = history.filter(item => item.isPerfect).length;
             const chanceCount = history.length;
             const albumProgress = Math.floor((album.length / 120) * 100);
             
-            // 運勢（小寺率）計算: シャッフル回数に対するパーフェクトの割合
             let luckRate = 0;
-            if (currentShuffleCount > 0) {
-                luckRate = (perfectCount / currentShuffleCount * 100).toFixed(4);
+            if (totalShuffleCount > 0) {
+                luckRate = (perfectCount / totalShuffleCount * 100).toFixed(4);
             }
 
-            // 表示更新
-            document.getElementById('statsShuffleCount').textContent = currentShuffleCount;
+            document.getElementById('statsCurrentKP').textContent = shuffleCount;
+            document.getElementById('statsTotalShuffleCount').textContent = totalShuffleCount;
             document.getElementById('statsAlbumProgress').textContent = `${album.length}/120 (${albumProgress}%)`;
             document.getElementById('statsPerfectCount').textContent = perfectCount;
             document.getElementById('statsKoderaCount').textContent = chanceCount;
             document.getElementById('statsLuckRate').textContent = `${luckRate}%`;
 
-            // ランク判定ロジック
             let rank = "見習い小寺";
-            if (album.length === 120) {
+            
+            if (inventory['title_oilking']) {
+                rank = "👑 小寺石油王 👑";
+            } else if (album.length === 120) {
                 rank = "👑 LEGEND GARY 👑";
             } else if (perfectCount >= 10) {
                 rank = "小寺神";
             } else if (album.length >= 60) {
                 rank = "熟練ハミルトン";
-            } else if (currentShuffleCount >= 1000) {
+            } else if (totalShuffleCount >= 1000) {
                 rank = "小寺マニア";
-            } else if (currentShuffleCount >= 100) {
+            } else if (totalShuffleCount >= 100) {
                 rank = "小寺ファン";
             }
             
@@ -1684,7 +1682,7 @@
         /* エフェクト関数（共通） */
         function createFireworks(targetId = 'koderaPerfect') {
             const container = document.getElementById(targetId);
-            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493', '#ffffff', '#ffd700'];
+            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#000000', '#8b00ff', '#ff1493', '#ffffff', '#ffd700'];
             const count = targetId === 'koderaComplete' ? 200 : 100;
 
             for (let i = 0; i < count; i++) {
@@ -1882,14 +1880,33 @@
         }
 
         function shuffleWords() {
-            const words = [...FIXED_WORDS];
-            
-            for (let i = words.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [words[i], words[j]] = [words[j], words[i]];
+            let words = [...FIXED_WORDS];
+            let resultText = '';
+
+            if (ticketActive && inventory['ticket_kodera'] > 0) {
+                inventory['ticket_kodera']--;
+                saveData();
+                updateTicketDisplay();
+                
+                if (inventory['ticket_kodera'] <= 0) {
+                    toggleTicket();
+                }
+
+                const remaining = ['・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
+                for (let i = remaining.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+                }
+                resultText = '小寺' + remaining.join('');
+                
+            } else {
+                for (let i = words.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [words[i], words[j]] = [words[j], words[i]];
+                }
+                resultText = words.join('');
             }
 
-            const resultText = words.join('');
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
@@ -1922,6 +1939,7 @@
                 closePerfect();
                 closeComplete();
                 closeAccount();
+                closeShop();
             }
         });
     </script>
