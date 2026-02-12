@@ -46,6 +46,7 @@
         
         body.theme-gold::before {
             background: rgba(255, 215, 0, 0.02); 
+            -webkit-backdrop-filter: sepia(10%);
             backdrop-filter: sepia(10%);
         }
 
@@ -63,6 +64,7 @@
         body.theme-kodera .container,
         body.theme-gold .container {
             background: rgba(255, 255, 255, 0.03);
+            -webkit-backdrop-filter: blur(8px);
             backdrop-filter: blur(8px);
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
@@ -86,6 +88,7 @@
         body.theme-gold .result-section,
         body.theme-gold .shuffle-counter {
             background: rgba(255, 255, 255, 0.06);
+            -webkit-backdrop-filter: blur(3px);
             backdrop-filter: blur(3px);
         }
 
@@ -482,7 +485,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            z-index: 99999;
+            z-index: 10000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -505,7 +508,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            z-index: 100000;
+            z-index: 10001;
         }
 
         .modal-overlay.show .modal-card { transform: translateY(0); }
@@ -539,7 +542,7 @@
             align-items: center;
             justify-content: center;
             transition: background 0.3s;
-            z-index: 100001;
+            z-index: 10002;
         }
 
         .close-modal:hover { background: rgba(255,255,255,0.4); }
@@ -1430,6 +1433,11 @@
         }
 
         function openShop() {
+            // 既にモーダルが開いている場合は何もしない
+            if (document.getElementById('shopModal').classList.contains('show')) {
+                return;
+            }
+            
             const list = document.getElementById('shopList');
             document.getElementById('shopKpDisplay').textContent = shuffleCount;
             
@@ -1516,13 +1524,22 @@
                 }
                 
                 saveData();
-                openShop(); 
                 
                 if (item.id === 'speed_god') checkGodSpeed();
                 if (item.id === 'ticket_kodera' || item.type === 'consumable_bulk') updateTicketDisplay();
                 if (item.type === 'title') updateStats();
                 
-                alert('購入しました！');
+                // テーマアイテムの場合は閉じてから適用
+                if (item.type === 'theme') {
+                    alert('購入しました！');
+                    closeShop();
+                    setTimeout(() => {
+                        setTheme(item.themeClass);
+                    }, 100);
+                } else {
+                    openShop();
+                    alert('購入しました！');
+                }
             } else {
                 alert('KPが足りません！');
             }
@@ -1531,7 +1548,12 @@
         function setTheme(themeClass) {
             localStorage.setItem('currentTheme', themeClass);
             applyTheme();
-            openShop();
+            
+            // モーダルを閉じてから再度開く
+            closeShop();
+            setTimeout(() => {
+                openShop();
+            }, 100);
         }
 
         function applyTheme() {
@@ -1692,6 +1714,11 @@
         }
 
         function openAccount() {
+            // 既にモーダルが開いている場合は何もしない
+            if (document.getElementById('accountModal').classList.contains('show')) {
+                return;
+            }
+            
             updateStats();
             document.getElementById('accountModal').classList.add('show');
             document.body.style.overflow = 'hidden';
