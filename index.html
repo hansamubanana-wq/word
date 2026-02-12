@@ -1206,13 +1206,11 @@
             </div>
         </div>
 
-        <!-- パーフェクト演出の全画面オーバーレイ -->
         <div class="kodera-perfect" id="koderaPerfect">
             <button class="close-perfect">✕ 閉じる</button>
             <div class="kodera-perfect-container">
                 <div class="kodera-perfect-title">🎊 PERFECT 🎊</div>
                 <div class="kodera-perfect-subtitle">小寺ハミルトンゲイリー！！！</div>
-                <!-- 画像のパスをここで設定してください -->
                 <img id="perfectImage" class="kodera-perfect-image" src="" alt="Perfect!" style="display: none;">
             </div>
         </div>
@@ -1232,6 +1230,23 @@
             <div class="shuffle-counter-value" id="shuffleCount">0</div>
         </div>
 
+        <div class="album-section">
+            <div class="album-header">
+                <div class="album-title">📚 小寺コレクション</div>
+                <div class="album-progress" id="albumProgress">0/120</div>
+            </div>
+            <div class="album-pages">
+                <button class="page-btn active" onclick="changePage(1)">Page 1</button>
+                <button class="page-btn" onclick="changePage(2)">Page 2</button>
+                <button class="page-btn" onclick="changePage(3)">Page 3</button>
+                <button class="page-btn" onclick="changePage(4)">Page 4</button>
+            </div>
+            <div class="album-grid" id="albumGrid"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="clear-album-btn" onclick="clearAlbum()">コレクションをリセット</button>
+            </div>
+        </div>
+
         <div class="kodera-history-section">
             <div class="kodera-history-header">
                 <div class="kodera-history-title">🌟 小寺チャンス履歴（永久保存）</div>
@@ -1249,23 +1264,6 @@
             </div>
             <div class="history-list" id="historyList">
                 <div class="history-empty">まだ履歴がありません</div>
-            </div>
-        </div>
-
-        <div class="album-section">
-            <div class="album-header">
-                <div class="album-title">📚 小寺コレクション</div>
-                <div class="album-progress" id="albumProgress">0/120</div>
-            </div>
-            <div class="album-pages">
-                <button class="page-btn active" onclick="changePage(1)">Page 1</button>
-                <button class="page-btn" onclick="changePage(2)">Page 2</button>
-                <button class="page-btn" onclick="changePage(3)">Page 3</button>
-                <button class="page-btn" onclick="changePage(4)">Page 4</button>
-            </div>
-            <div class="album-grid" id="albumGrid"></div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="clear-album-btn" onclick="clearAlbum()">コレクションをリセット</button>
             </div>
         </div>
     </div>
