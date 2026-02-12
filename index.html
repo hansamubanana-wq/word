@@ -55,6 +55,182 @@
             background: #f9f9f9;
             border-radius: 10px;
             margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .speed-selector {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .speed-selector label {
+            font-size: 12px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .speed-selector select {
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* アルバム機能 */
+        .album-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .album-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .album-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .album-progress {
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .album-pages {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .page-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .album-card {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .album-card.locked {
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .album-card.unlocked {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 107, 0, 0.8));
+            border-color: #ffd700;
+            animation: cardUnlock 0.5s;
+        }
+
+        .album-card.unlocked:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .album-card.perfect {
+            background: linear-gradient(135deg, #ff00de 0%, #00ff00 100%);
+            border-color: #ff00de;
+            animation: perfectCard 2s infinite;
+        }
+
+        .album-card-text {
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            word-break: break-all;
+            font-size: 12px;
+        }
+
+        .album-card-lock {
+            font-size: 24px;
+        }
+
+        .clear-album-btn {
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .clear-album-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        @keyframes cardUnlock {
+            0% {
+                transform: scale(0.5) rotate(-180deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes perfectCard {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 0, 222, 1);
+            }
         }
 
         .auto-shuffle-toggle {
@@ -797,6 +973,18 @@
                 font-size: 15px;
             }
 
+            .album-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .album-title {
+                font-size: 20px;
+            }
+
+            .album-card-text {
+                font-size: 10px;
+            }
+
             .result-section {
                 padding: 20px;
                 margin-top: 20px;
@@ -922,6 +1110,23 @@
                 font-size: 14px;
             }
 
+            .album-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .album-title {
+                font-size: 18px;
+            }
+
+            .album-card-text {
+                font-size: 9px;
+            }
+
+            .page-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
             .kodera-chance-text {
                 font-size: 20px;
             }
@@ -983,6 +1188,17 @@
                     🎲 自動シャッフル開始
                 </button>
                 <span class="auto-shuffle-label" id="autoShuffleLabel">停止中</span>
+                <div class="speed-selector">
+                    <label for="speedSelect">速度:</label>
+                    <select id="speedSelect" onchange="changeSpeed()">
+                        <option value="2000">超ゆっくり (2秒)</option>
+                        <option value="1000">ゆっくり (1秒)</option>
+                        <option value="500" selected>普通 (0.5秒)</option>
+                        <option value="200">速い (0.2秒)</option>
+                        <option value="100">超速 (0.1秒)</option>
+                        <option value="50">爆速 (0.05秒)</option>
+                    </select>
+                </div>
             </div>
 
             <div class="button-group">
@@ -1035,6 +1251,23 @@
                 <div class="history-empty">まだ履歴がありません</div>
             </div>
         </div>
+
+        <div class="album-section">
+            <div class="album-header">
+                <div class="album-title">📚 小寺コレクション</div>
+                <div class="album-progress" id="albumProgress">0/120</div>
+            </div>
+            <div class="album-pages">
+                <button class="page-btn active" onclick="changePage(1)">Page 1</button>
+                <button class="page-btn" onclick="changePage(2)">Page 2</button>
+                <button class="page-btn" onclick="changePage(3)">Page 3</button>
+                <button class="page-btn" onclick="changePage(4)">Page 4</button>
+            </div>
+            <div class="album-grid" id="albumGrid"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="clear-album-btn" onclick="clearAlbum()">コレクションをリセット</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1042,6 +1275,8 @@
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
         let shuffleCount = 0;
+        let currentPage = 1;
+        let currentSpeed = 500;
 
         // ★★★ 画像のパスをここに設定してください ★★★
         // 例: const PERFECT_IMAGE_PATH = 'path/to/your/image.jpg';
@@ -1051,11 +1286,34 @@
         // 固定の単語（小寺ハミルトンゲイリー）
         const FIXED_WORDS = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
 
+        // 120通りの小寺チャンス組み合わせを生成
+        function generateAllKoderaCombinations() {
+            const remaining = ['・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
+            const combinations = [];
+            
+            function permute(arr, prefix = []) {
+                if (arr.length === 0) {
+                    combinations.push('小寺' + prefix.join(''));
+                    return;
+                }
+                for (let i = 0; i < arr.length; i++) {
+                    const newArr = arr.slice(0, i).concat(arr.slice(i + 1));
+                    permute(newArr, prefix.concat(arr[i]));
+                }
+            }
+            
+            permute(remaining);
+            return combinations;
+        }
+
+        const ALL_KODERA_COMBINATIONS = generateAllKoderaCombinations();
+
         // ページ読み込み時に履歴を表示
         window.addEventListener('DOMContentLoaded', function() {
             displayHistory();
             displayKoderaHistory();
             loadShuffleCount();
+            displayAlbum();
 
             // 画像パスが設定されていれば画像を表示
             if (PERFECT_IMAGE_PATH) {
@@ -1066,6 +1324,80 @@
             // 閉じるボタンのイベントリスナーを設定
             document.querySelector('.close-perfect').addEventListener('click', closePerfect);
         });
+
+        function changeSpeed() {
+            currentSpeed = parseInt(document.getElementById('speedSelect').value);
+            if (isAutoShuffling) {
+                // 自動シャッフル中なら再起動
+                toggleAutoShuffle();
+                toggleAutoShuffle();
+            }
+        }
+
+        function getUnlockedAlbum() {
+            return JSON.parse(localStorage.getItem('koderaAlbum') || '[]');
+        }
+
+        function unlockInAlbum(text) {
+            let album = getUnlockedAlbum();
+            if (!album.includes(text)) {
+                album.push(text);
+                localStorage.setItem('koderaAlbum', JSON.stringify(album));
+                displayAlbum();
+            }
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            document.querySelectorAll('.page-btn').forEach((btn, index) => {
+                if (index + 1 === page) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            displayAlbum();
+        }
+
+        function displayAlbum() {
+            const album = getUnlockedAlbum();
+            const grid = document.getElementById('albumGrid');
+            const progress = document.getElementById('albumProgress');
+            
+            // 進捗を更新
+            progress.textContent = `${album.length}/120`;
+            
+            // 現在のページの30個を表示 (6x5)
+            const startIndex = (currentPage - 1) * 30;
+            const endIndex = startIndex + 30;
+            const pageItems = ALL_KODERA_COMBINATIONS.slice(startIndex, endIndex);
+            
+            grid.innerHTML = pageItems.map(combination => {
+                const isUnlocked = album.includes(combination);
+                const isPerfect = combination === '小寺ハミルトンゲイリー' || combination === '小寺・ハミルトンゲイリー';
+                
+                if (isUnlocked) {
+                    return `
+                        <div class="album-card unlocked ${isPerfect ? 'perfect' : ''}">
+                            <div class="album-card-text">${combination}</div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="album-card locked">
+                            <div class="album-card-lock">🔒</div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        function clearAlbum() {
+            if (confirm('コレクションをすべてリセットしますか？')) {
+                localStorage.removeItem('koderaAlbum');
+                displayAlbum();
+            }
+        }
 
         function loadShuffleCount() {
             shuffleCount = parseInt(localStorage.getItem('shuffleCount') || '0');
@@ -1227,6 +1559,11 @@
                     clearInterval(ringInterval);
                 }
             }, 2000);
+
+            // 10秒後に自動的に閉じる
+            setTimeout(() => {
+                closePerfect();
+            }, 10000);
         }
 
         function closePerfect() {
@@ -1260,10 +1597,10 @@
                 // 最初に1回実行
                 shuffleWords();
                 
-                // 0.5秒ごとに実行
+                // 選択された速度でシャッフル実行
                 autoShuffleInterval = setInterval(() => {
                     shuffleWords();
-                }, 500);
+                }, currentSpeed);
             }
         }
 
@@ -1333,12 +1670,14 @@
             if (resultText === '小寺ハミルトンゲイリー' || resultText === '小寺・ハミルトンゲイリー') {
                 showPerfect();
                 saveToKoderaHistory(resultText, true);
+                unlockInAlbum(resultText); // アルバムに追加
             }
             // 小寺チャンス判定
             else if (resultText.startsWith('小寺')) {
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.add('show');
                 saveToKoderaHistory(resultText, false);
+                unlockInAlbum(resultText); // アルバムに追加
             } else {
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.remove('show');
