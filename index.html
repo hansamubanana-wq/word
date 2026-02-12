@@ -412,7 +412,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             transform: translateY(20px);
             transition: transform 0.3s;
-            /* ★★★ スマホスクロール対策 ★★★ */
             max-height: 85vh; /* 画面の高さの85%まで */
             overflow-y: auto; /* はみ出たらスクロール */
             -webkit-overflow-scrolling: touch; /* iOSで滑らかに */
@@ -471,7 +470,7 @@
             border: 4px solid rgba(255,255,255,0.5);
             cursor: pointer;
             transition: transform 0.2s;
-            overflow: hidden; /* 画像がはみ出ないように */
+            overflow: hidden;
         }
 
         .user-icon img {
@@ -573,7 +572,6 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            /* 少し手前に出す */
             position: relative;
             z-index: 5;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -1033,87 +1031,6 @@
             word-break: break-word;
         }
 
-        .history-section {
-            margin-top: 30px;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .history-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .clear-history-btn {
-            padding: 10px 15px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-height: 44px;
-            touch-action: manipulation;
-        }
-
-        .clear-history-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        .history-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .history-item {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        }
-
-        .history-item:hover {
-            background: #f0f0f0;
-            transform: translateX(5px);
-        }
-
-        .history-text {
-            flex: 1;
-            font-size: 16px;
-            color: #333;
-            word-break: break-word;
-        }
-
-        .history-time {
-            font-size: 12px;
-            color: #999;
-            margin-left: 15px;
-            white-space: nowrap;
-        }
-
-        .history-empty {
-            text-align: center;
-            color: #999;
-            padding: 20px;
-            font-size: 14px;
-        }
-
         /* シャッフルカウンター */
         .shuffle-counter {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1134,121 +1051,6 @@
         .shuffle-counter-value {
             font-size: 32px;
             font-weight: bold;
-        }
-
-        /* 小寺チャンス専用履歴 */
-        .kodera-history-section {
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            border-radius: 15px;
-            border: 3px solid #ff6b00;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-        }
-
-        .kodera-history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .kodera-history-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ff0000;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-        }
-
-        .clear-kodera-history-btn {
-            padding: 8px 15px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-height: 44px;
-            touch-action: manipulation;
-        }
-
-        .clear-kodera-history-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        .kodera-history-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .kodera-history-item {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #ff6b00;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-            animation: koderaItemAppear 0.5s;
-        }
-
-        .kodera-history-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
-        }
-
-        .kodera-history-item.perfect {
-            background: linear-gradient(135deg, #ff00de 0%, #00ff00 100%);
-            color: white;
-            border-left: 4px solid #ff0000;
-            font-weight: bold;
-            animation: koderaItemAppear 0.5s, perfectGlow 2s infinite;
-        }
-
-        .kodera-history-text {
-            flex: 1;
-            font-size: 16px;
-            word-break: break-word;
-        }
-
-        .kodera-history-time {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-left: 15px;
-            white-space: nowrap;
-        }
-
-        .kodera-history-badge {
-            background: #ff0000;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        @keyframes koderaItemAppear {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes perfectGlow {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 0, 222, 1);
-            }
         }
 
         @media (max-width: 768px) {
@@ -1348,72 +1150,6 @@
             .shuffle-counter-value {
                 font-size: 28px;
             }
-
-            .kodera-history-section {
-                padding: 20px;
-            }
-
-            .kodera-history-header {
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
-            }
-
-            .kodera-history-title {
-                font-size: 16px;
-                text-align: center;
-            }
-
-            .clear-kodera-history-btn {
-                width: 100%;
-            }
-
-            .kodera-history-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-                padding: 12px;
-            }
-
-            .kodera-history-time {
-                margin-left: 0;
-            }
-
-            .history-section {
-                padding: 20px;
-                margin-top: 20px;
-            }
-
-            .history-header {
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
-            }
-
-            .history-title {
-                font-size: 16px;
-                text-align: center;
-            }
-
-            .clear-history-btn {
-                width: 100%;
-            }
-
-            .history-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-                padding: 12px;
-            }
-
-            .history-text {
-                font-size: 15px;
-            }
-
-            .history-time {
-                margin-left: 0;
-                font-size: 11px;
-            }
             
             .complete-title {
                 font-size: 48px;
@@ -1502,19 +1238,7 @@
                 font-size: 24px;
             }
 
-            .kodera-history-title {
-                font-size: 14px;
-            }
-
-            .kodera-history-text {
-                font-size: 14px;
-            }
-
-            .history-text {
-                font-size: 14px;
-            }
-            
-             .complete-title {
+            .complete-title {
                 font-size: 36px;
             }
             
@@ -1670,30 +1394,9 @@
                 <button class="clear-album-btn" onclick="clearAlbum()">コレクションをリセット</button>
             </div>
         </div>
-
-        <div class="kodera-history-section">
-            <div class="kodera-history-header">
-                <div class="kodera-history-title">🌟 小寺チャンス履歴（永久保存）</div>
-                <button class="clear-kodera-history-btn" onclick="clearKoderaHistory()">履歴をクリア</button>
-            </div>
-            <div class="kodera-history-list" id="koderaHistoryList">
-                <div class="history-empty">まだ小寺チャンスが出ていません</div>
-            </div>
-        </div>
-
-        <div class="history-section">
-            <div class="history-header">
-                <div class="history-title">📜 履歴（最大10件）</div>
-                <button class="clear-history-btn" onclick="clearHistory()">履歴をクリア</button>
-            </div>
-            <div class="history-list" id="historyList">
-                <div class="history-empty">まだ履歴がありません</div>
-            </div>
-        </div>
     </div>
 
     <script>
-        const MAX_HISTORY = 10;
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
         let shuffleCount = 0;
@@ -1727,8 +1430,6 @@
         const ALL_KODERA_COMBINATIONS = generateAllKoderaCombinations();
 
         window.addEventListener('DOMContentLoaded', function() {
-            displayHistory();
-            displayKoderaHistory();
             loadShuffleCount();
             displayAlbum();
             loadProfile();
@@ -1845,33 +1546,8 @@
             
             history.unshift(item);
             
+            // 画面表示はしないが、データ保存は継続（マイページ統計用）
             localStorage.setItem('koderaHistory', JSON.stringify(history));
-            displayKoderaHistory();
-        }
-
-        function displayKoderaHistory() {
-            const history = JSON.parse(localStorage.getItem('koderaHistory') || '[]');
-            const historyList = document.getElementById('koderaHistoryList');
-            
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="history-empty">まだ小寺チャンスが出ていません</div>';
-                return;
-            }
-            
-            historyList.innerHTML = history.map((item, index) => `
-                <div class="kodera-history-item ${item.isPerfect ? 'perfect' : ''}">
-                    <div class="kodera-history-text">${item.text}</div>
-                    ${item.isPerfect ? '<span class="kodera-history-badge">PERFECT</span>' : ''}
-                    <div class="kodera-history-time">${item.timestamp}</div>
-                </div>
-            `).join('');
-        }
-
-        function clearKoderaHistory() {
-            if (confirm('小寺チャンス履歴をすべて削除しますか？')) {
-                localStorage.removeItem('koderaHistory');
-                displayKoderaHistory();
-            }
         }
 
         /* アカウント関連の機能 */
@@ -2205,48 +1881,6 @@
             }
         }
 
-        function saveToHistory(text) {
-            let history = JSON.parse(localStorage.getItem('wordShuffleHistory') || '[]');
-            
-            const item = {
-                text: text,
-                timestamp: new Date().toLocaleString('ja-JP')
-            };
-            
-            history.unshift(item);
-            
-            if (history.length > MAX_HISTORY) {
-                history = history.slice(0, MAX_HISTORY);
-            }
-            
-            localStorage.setItem('wordShuffleHistory', JSON.stringify(history));
-            displayHistory();
-        }
-
-        function displayHistory() {
-            const history = JSON.parse(localStorage.getItem('wordShuffleHistory') || '[]');
-            const historyList = document.getElementById('historyList');
-            
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="history-empty">まだ履歴がありません</div>';
-                return;
-            }
-            
-            historyList.innerHTML = history.map((item, index) => `
-                <div class="history-item">
-                    <div class="history-text">${item.text}</div>
-                    <div class="history-time">${item.timestamp}</div>
-                </div>
-            `).join('');
-        }
-
-        function clearHistory() {
-            if (confirm('履歴をすべて削除しますか？')) {
-                localStorage.removeItem('wordShuffleHistory');
-                displayHistory();
-            }
-        }
-
         function shuffleWords() {
             const words = [...FIXED_WORDS];
             
@@ -2275,8 +1909,6 @@
                 const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.remove('show');
             }
-            
-            saveToHistory(resultText);
         }
 
         document.addEventListener('keypress', function(e) {
