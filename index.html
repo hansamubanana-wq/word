@@ -210,6 +210,85 @@
             word-break: break-word;
         }
 
+        .history-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clear-history-btn {
+            padding: 8px 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clear-history-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .history-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .history-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .history-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: #999;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-size: 14px;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 25px;
@@ -225,6 +304,16 @@
 
             .controls {
                 font-size: 11px;
+            }
+
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .history-time {
+                margin-left: 0;
             }
         }
     </style>
@@ -351,10 +440,26 @@
             <div class="result-label">生成された文章：</div>
             <div class="result-text" id="resultText"></div>
         </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <div class="history-title">📜 履歴（最大10件）</div>
+                <button class="clear-history-btn" onclick="clearHistory()">履歴をクリア</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">まだ履歴がありません</div>
+            </div>
+        </div>
     </div>
 
     <script>
         const linkedWords = new Set();
+        const MAX_HISTORY = 10;
+
+        // ページ読み込み時に履歴を表示
+        window.addEventListener('DOMContentLoaded', function() {
+            displayHistory();
+        });
 
         function handlePositionClick(type, index) {
             const checkbox = document.getElementById(`${type}${index}`);
@@ -380,6 +485,50 @@
             } else {
                 linkedWords.add(index);
                 linkIcon.classList.add('linked');
+            }
+        }
+
+        function saveToHistory(text) {
+            let history = JSON.parse(localStorage.getItem('wordShuffleHistory') || '[]');
+            
+            // 新しい履歴アイテムを追加
+            const item = {
+                text: text,
+                timestamp: new Date().toLocaleString('ja-JP')
+            };
+            
+            history.unshift(item); // 先頭に追加
+            
+            // 10件を超えたら古いものを削除
+            if (history.length > MAX_HISTORY) {
+                history = history.slice(0, MAX_HISTORY);
+            }
+            
+            localStorage.setItem('wordShuffleHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function displayHistory() {
+            const history = JSON.parse(localStorage.getItem('wordShuffleHistory') || '[]');
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-empty">まだ履歴がありません</div>';
+                return;
+            }
+            
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="history-item">
+                    <div class="history-text">${item.text}</div>
+                    <div class="history-time">${item.timestamp}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearHistory() {
+            if (confirm('履歴をすべて削除しますか？')) {
+                localStorage.removeItem('wordShuffleHistory');
+                displayHistory();
             }
         }
 
@@ -449,6 +598,9 @@
             const resultText = result.join('');
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
+            
+            // 履歴に保存
+            saveToHistory(resultText);
         }
 
         function clearAll() {
