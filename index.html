@@ -249,14 +249,27 @@
 
         .kodera-chance {
             display: none;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            border: 4px solid #ff6b00;
-            border-radius: 15px;
-            padding: 20px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            border: 6px solid #ff6b00;
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             text-align: center;
-            animation: koderaAppear 0.5s, koderaPulse 1s infinite;
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.5);
+            animation: koderaAppear 0.5s, koderaPulse 0.5s infinite, rainbowBorder 2s infinite;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 107, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kodera-chance::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
         }
 
         .kodera-chance.show {
@@ -264,18 +277,198 @@
         }
 
         .kodera-chance-text {
-            font-size: 32px;
+            font-size: 40px;
             font-weight: bold;
             color: #ff0000;
-            text-shadow: 3px 3px 0px #ffed4e, 6px 6px 0px rgba(0,0,0,0.2);
-            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px #ffed4e, 6px 6px 0px rgba(0,0,0,0.2), 0 0 20px #fff, 0 0 30px #ff0000;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
         }
 
         .kodera-chance-emoji {
-            font-size: 48px;
+            font-size: 56px;
             display: block;
-            margin: 10px 0;
-            animation: spin 2s linear infinite;
+            margin: 15px 0;
+            animation: spin 2s linear infinite, bounce 1s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* パーフェクト演出 */
+        .kodera-perfect {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+            background-size: 400% 400%;
+            animation: rainbowBackground 3s ease infinite;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .kodera-perfect.show {
+            display: flex;
+        }
+
+        .kodera-perfect-container {
+            position: relative;
+            text-align: center;
+            animation: zoomInOut 2s ease-in-out infinite;
+        }
+
+        .kodera-perfect-title {
+            font-size: 80px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px #000, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            animation: textGlow 1s ease-in-out infinite;
+        }
+
+        .kodera-perfect-subtitle {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 3px 3px 0px #ff0000, 6px 6px 0px #000, 0 0 20px #fff;
+            margin-bottom: 30px;
+            animation: shake 0.5s infinite;
+        }
+
+        .kodera-perfect-image {
+            max-width: 400px;
+            max-height: 400px;
+            border: 10px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #fff, 0 0 100px #ff00de, 0 0 150px #ff00de;
+            animation: rotate3d 4s linear infinite, imagePulse 1s ease-in-out infinite;
+            margin: 20px 0;
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: explode 1s ease-out infinite;
+        }
+
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            animation: float 3s ease-in-out infinite;
+            font-size: 30px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: fall 3s linear infinite;
+        }
+
+        .close-perfect {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid #fff;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10000;
+        }
+
+        .close-perfect:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+        }
+
+        @keyframes rainbowBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes rainbowBorder {
+            0% { border-color: #ff0000; }
+            16% { border-color: #ff7f00; }
+            33% { border-color: #ffff00; }
+            50% { border-color: #00ff00; }
+            66% { border-color: #0000ff; }
+            83% { border-color: #8b00ff; }
+            100% { border-color: #ff0000; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes zoomInOut {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px #000, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de; }
+            50% { text-shadow: 0 0 20px #000, 0 0 30px #fff, 0 0 40px #fff, 0 0 60px #ff00de, 0 0 100px #ff00de, 0 0 120px #ff00de; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes imagePulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.3); }
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
         }
 
         @keyframes fadeIn {
@@ -319,6 +512,11 @@
             to {
                 transform: rotate(360deg);
             }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .result-label {
@@ -500,6 +698,24 @@
                 font-size: 36px;
             }
 
+            .kodera-perfect-title {
+                font-size: 48px;
+            }
+
+            .kodera-perfect-subtitle {
+                font-size: 28px;
+            }
+
+            .kodera-perfect-image {
+                max-width: 300px;
+                max-height: 300px;
+            }
+
+            .close-perfect {
+                font-size: 18px;
+                padding: 10px 20px;
+            }
+
             .result-text {
                 font-size: 20px;
             }
@@ -574,6 +790,27 @@
 
             .kodera-chance-emoji {
                 font-size: 32px;
+            }
+
+            .kodera-perfect-title {
+                font-size: 36px;
+                letter-spacing: 2px;
+            }
+
+            .kodera-perfect-subtitle {
+                font-size: 22px;
+            }
+
+            .kodera-perfect-image {
+                max-width: 250px;
+                max-height: 250px;
+            }
+
+            .close-perfect {
+                font-size: 16px;
+                padding: 8px 16px;
+                top: 10px;
+                right: 10px;
             }
 
             .result-text {
@@ -711,6 +948,17 @@
             </div>
         </div>
 
+        <!-- パーフェクト演出の全画面オーバーレイ -->
+        <div class="kodera-perfect" id="koderaPerfect">
+            <button class="close-perfect" onclick="closePerfect()">✕ 閉じる</button>
+            <div class="kodera-perfect-container">
+                <div class="kodera-perfect-title">🎊 PERFECT 🎊</div>
+                <div class="kodera-perfect-subtitle">小寺ハミルトンゲイリー！！！</div>
+                <!-- 画像のパスをここで設定してください -->
+                <img id="perfectImage" class="kodera-perfect-image" src="" alt="Perfect!" style="display: none;">
+            </div>
+        </div>
+
         <div class="kodera-chance" id="koderaChance">
             <div class="kodera-chance-emoji">🎉✨🎊</div>
             <div class="kodera-chance-text">小寺チャンス！！</div>
@@ -738,6 +986,11 @@
         let autoShuffleInterval = null;
         let isAutoShuffling = false;
 
+        // ★★★ 画像のパスをここに設定してください ★★★
+        // 例: const PERFECT_IMAGE_PATH = 'path/to/your/image.jpg';
+        // または: const PERFECT_IMAGE_PATH = 'https://example.com/image.jpg';
+        const PERFECT_IMAGE_PATH = '';  // ←ここに画像のパスを入れてください
+
         // 初期値を設定
         const initialWords = ['小', '寺', '・', 'ハミ', 'ルトン', 'ゲイ', 'リー'];
 
@@ -749,7 +1002,90 @@
             initialWords.forEach((word, index) => {
                 document.getElementById(`word${index + 1}`).value = word;
             });
+
+            // 画像パスが設定されていれば画像を表示
+            if (PERFECT_IMAGE_PATH) {
+                document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
+                document.getElementById('perfectImage').style.display = 'block';
+            }
         });
+
+        function createFireworks() {
+            const container = document.getElementById('koderaPerfect');
+            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * 100 + '%';
+                    firework.style.top = Math.random() * 100 + '%';
+                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                    firework.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                    container.appendChild(firework);
+                    
+                    setTimeout(() => firework.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        function createStars() {
+            const container = document.getElementById('koderaPerfect');
+            const starEmojis = ['⭐', '✨', '🌟', '💫'];
+            
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('koderaPerfect');
+            const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#8b00ff', '#ff1493'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+            }
+        }
+
+        function showPerfect() {
+            const perfectElement = document.getElementById('koderaPerfect');
+            perfectElement.classList.add('show');
+            
+            // エフェクトを生成
+            createFireworks();
+            createStars();
+            createConfetti();
+            
+            // 花火を継続的に発生
+            const fireworkInterval = setInterval(() => {
+                if (perfectElement.classList.contains('show')) {
+                    createFireworks();
+                } else {
+                    clearInterval(fireworkInterval);
+                }
+            }, 1000);
+        }
+
+        function closePerfect() {
+            const perfectElement = document.getElementById('koderaPerfect');
+            perfectElement.classList.remove('show');
+            
+            // エフェクトをクリア
+            perfectElement.querySelectorAll('.firework, .star, .confetti').forEach(el => el.remove());
+        }
 
         function toggleAutoShuffle() {
             const btn = document.getElementById('autoShuffleBtn');
@@ -920,11 +1256,16 @@
             document.getElementById('resultText').textContent = resultText;
             document.getElementById('resultSection').classList.add('show');
             
+            // パーフェクト判定（小寺ハミルトンゲイリー）
+            if (resultText === '小寺ハミルトンゲイリー' || resultText === '小寺・ハミルトンゲイリー') {
+                showPerfect();
+            }
             // 小寺チャンス判定
-            const koderaChanceElement = document.getElementById('koderaChance');
-            if (resultText.startsWith('小寺')) {
+            else if (resultText.startsWith('小寺')) {
+                const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.add('show');
             } else {
+                const koderaChanceElement = document.getElementById('koderaChance');
                 koderaChanceElement.classList.remove('show');
             }
             
@@ -937,6 +1278,9 @@
             if (isAutoShuffling) {
                 toggleAutoShuffle();
             }
+            
+            // パーフェクト演出を閉じる
+            closePerfect();
             
             // 全ての入力フィールドをクリア
             for (let i = 1; i <= 7; i++) {
