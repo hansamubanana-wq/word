@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小寺ハミルトンゲイリー ガチャ</title>
     <style>
         * {
@@ -69,7 +69,7 @@
             border: 2px solid rgba(255, 255, 255, 0.15);
         }
 
-        /* 小寺背景のときは文字を白に */
+        /* 文字色調整 */
         body.theme-kodera h1,
         body.theme-kodera .result-label,
         body.theme-kodera .result-text,
@@ -80,84 +80,48 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* 各セクションに軽い背景を追加 */
+        /* セクション共通背景（テーマ適用時） */
         body.theme-kodera .auto-shuffle-container,
         body.theme-kodera .result-section,
         body.theme-kodera .shuffle-counter,
+        body.theme-kodera .album-section,
+        body.theme-kodera .mypage-section,
+        body.theme-kodera .shop-section,
         body.theme-gold .auto-shuffle-container,
         body.theme-gold .result-section,
-        body.theme-gold .shuffle-counter {
+        body.theme-gold .shuffle-counter,
+        body.theme-gold .album-section,
+        body.theme-gold .mypage-section,
+        body.theme-gold .shop-section {
             background: rgba(255, 255, 255, 0.06);
             -webkit-backdrop-filter: blur(3px);
             backdrop-filter: blur(3px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* テーマ適用時のグラデーション調整 */
         body.theme-kodera .shuffle-counter,
-        body.theme-gold .shuffle-counter {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
-        }
-
         body.theme-kodera .album-section,
-        body.theme-gold .album-section {
+        body.theme-kodera .mypage-section,
+        body.theme-gold .shuffle-counter,
+        body.theme-gold .album-section,
+        body.theme-gold .mypage-section {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
         }
-
-        /* 右上のボタン群 */
-        .header-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+        
+        body.theme-kodera .shop-section,
+        body.theme-gold .shop-section {
+             background: linear-gradient(135deg, rgba(255, 107, 0, 0.25) 0%, rgba(255, 179, 71, 0.25) 100%);
         }
 
-        .header-btn {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: 2px solid #667eea;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .header-btn:hover { background: #667eea; color: white; }
-
-        .shop-btn { border-color: #ff6b00; color: #ff6b00; background: rgba(255, 107, 0, 0.1); }
-        .shop-btn:hover { background: #ff6b00; color: white; }
-
-        /* 小寺背景でのボタンも見やすく */
-        body.theme-kodera .header-btn,
-        body.theme-gold .header-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-color: white;
-        }
-
-        body.theme-kodera .shop-btn,
-        body.theme-gold .shop-btn {
-            background: rgba(255, 215, 0, 0.3);
-            border-color: #ffd700;
-            color: #ffd700;
-        }
 
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
             font-size: 28px;
-            margin-top: 30px;
+            margin-top: 10px;
             cursor: default;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
         
@@ -191,7 +155,6 @@
             font-weight: bold;
         }
 
-        /* 速度選択やラベルの見やすさ */
         body.theme-kodera .speed-selector label,
         body.theme-kodera .auto-shuffle-label,
         body.theme-gold .speed-selector label,
@@ -199,23 +162,31 @@
             color: white;
         }
 
-        /* アルバム機能 */
-        .album-section {
+        /* セクション共通スタイル */
+        .section-box {
             margin-top: 30px;
             padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
             color: white;
+            position: relative;
         }
-
-        .album-header {
+        
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .section-title { font-size: 24px; font-weight: bold; }
+
+        /* アルバム機能 */
+        .album-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .album-title { font-size: 24px; font-weight: bold; }
         .album-progress {
             font-size: 16px;
             background: rgba(255, 255, 255, 0.2);
@@ -316,17 +287,180 @@
             transform: translateY(-2px);
         }
 
-        @keyframes cardUnlock {
-            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
-            50% { transform: scale(1.2) rotate(10deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        /* マイページ機能 */
+        .mypage-section {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
         }
 
-        @keyframes perfectCard {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 222, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 0, 222, 1); }
+        .user-profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
+        .user-icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        .user-icon {
+            font-size: 64px;
+            background: white;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: transform 0.2s;
+            overflow: hidden;
+            color: #333;
+        }
+
+        .user-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .user-icon:hover { transform: scale(1.05); }
+
+        .edit-icon-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #ffd700;
+            color: #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 2px solid white;
+            pointer-events: none;
+        }
+
+        .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .edit-name-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .user-rank {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 10px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .status-item {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .status-label { font-size: 12px; color: #666; font-weight: bold; }
+
+        .status-item.highlight .status-value { color: #e53e3e; }
+        .status-item.kp-box .status-value { color: #667eea; }
+
+        /* ショップ機能 */
+        .shop-section {
+            background: linear-gradient(135deg, #ff6b00 0%, #ffb347 100%);
+        }
+
+        .kp-display-header {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 10px;
+        }
+
+        .shop-list { display: grid; gap: 15px; }
+
+        .shop-item {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #333;
+        }
+        
+        .shop-item:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        .item-icon {
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .item-info { flex: 1; }
+        .item-name { font-weight: bold; font-size: 16px; color: #333; }
+        .item-desc { font-size: 11px; color: #666; margin-top: 2px; }
+
+        .buy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 80px;
+            transition: all 0.2s;
+        }
+        
+        .buy-btn:hover { background: #5a6fd6; transform: scale(1.05); }
+        .buy-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .buy-btn.owned { background: #4caf50; cursor: default; }
+        .buy-btn.apply { background: #ff9800; }
+
+        /* シャッフル等ボタン */
         .auto-shuffle-toggle {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
@@ -479,270 +613,7 @@
             z-index: 1;
         }
 
-        /* デバッグ用パネル */
-        .debug-panel {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 0, 0, 0.9);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 999999;
-            max-width: 300px;
-            word-wrap: break-word;
-            cursor: pointer;
-        }
-
-        .debug-panel:hover {
-            background: rgba(255, 0, 0, 1);
-        }
-
-        /* モーダル共通 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            pointer-events: none;
-        }
-
-        .modal-overlay.show { 
-            display: flex; 
-            animation: fadeIn 0.3s;
-            pointer-events: auto;
-        }
-
-        .modal-card {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transform: translateY(20px);
-            transition: transform 0.3s;
-            max-height: 85vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 10001;
-            pointer-events: auto;
-        }
-
-        .modal-overlay.show .modal-card { transform: translateY(0); }
-
-        .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            color: white;
-            text-align: center;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .shop-header { background: linear-gradient(135deg, #ff6b00 0%, #ffb347 100%); }
-
-        .modal-title { font-size: 20px; font-weight: bold; }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            font-size: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-            z-index: 10002;
-            pointer-events: auto;
-        }
-
-        .close-modal:hover { background: rgba(255,255,255,0.4); }
-
-        /* アカウント関連 */
-        .user-icon-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
-            margin-top: 15px;
-        }
-
-        .user-icon {
-            font-size: 64px;
-            background: white;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: transform 0.2s;
-            overflow: hidden;
-            color: #333;
-        }
-
-        .user-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .user-icon:hover { transform: scale(1.05); }
-
-        .edit-icon-badge {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #ffd700;
-            color: #333;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            border: 2px solid white;
-            pointer-events: none;
-        }
-
-        .user-name {
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .edit-name-btn {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.8);
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .user-rank {
-            background: rgba(0,0,0,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 10px;
-            display: inline-block;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .status-grid {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .status-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-
-        .status-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-            margin: 5px 0;
-        }
-
-        .status-label { font-size: 12px; color: #666; }
-
-        .status-item.highlight {
-            background: linear-gradient(135deg, #fff6f6 0%, #fff0f0 100%);
-            border-color: #ffcccc;
-        }
-        .status-item.highlight .status-value { color: #e53e3e; }
-        
-        .status-item.kp-box {
-            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
-            border-color: #c3cfe2;
-        }
-        .status-item.kp-box .status-value { color: #667eea; }
-
-        /* ショップ関連 */
-        .kp-display {
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .shop-list { padding: 20px; display: grid; gap: 15px; }
-
-        .shop-item {
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.2s;
-        }
-        
-        .shop-item:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-
-        .item-icon {
-            font-size: 30px;
-            width: 50px;
-            height: 50px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .item-info { flex: 1; }
-        .item-name { font-weight: bold; font-size: 16px; color: #333; }
-        .item-desc { font-size: 11px; color: #666; margin-top: 2px; }
-
-        .buy-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            min-width: 80px;
-            transition: all 0.2s;
-            pointer-events: auto;
-        }
-        
-        .buy-btn:hover { background: #5a6fd6; transform: scale(1.05); }
-        .buy-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        .buy-btn.owned { background: #4caf50; cursor: default; }
-        .buy-btn.apply { background: #ff9800; }
-
+        /* アイコン変更など */
         .emoji-picker {
             display: none;
             background: white;
@@ -853,7 +724,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-stroke: 4px #fff;
-            text-stroke: 4px #fff;
             filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
             margin-bottom: 20px;
             animation: titlePulse 1s ease-in-out infinite alternate;
@@ -1125,11 +995,11 @@
         .shuffle-counter-label { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
         .shuffle-counter-value { font-size: 32px; font-weight: bold; }
 
+        /* スマホ対応 */
         @media (max-width: 768px) {
             body { padding: 10px; }
             .container { padding: 20px; max-width: 100%; }
             h1 { font-size: 22px; margin-bottom: 20px; }
-            .header-buttons { position: relative; top: auto; right: auto; width: 100%; justify-content: center; margin-bottom: 15px; }
             .auto-shuffle-container { flex-direction: column; align-items: stretch; }
             .auto-shuffle-toggle { width: 100%; }
             .auto-shuffle-label { text-align: center; }
@@ -1151,6 +1021,9 @@
             .complete-subtitle { font-size: 24px; }
             .complete-message { font-size: 16px; padding: 10px 20px; }
             .complete-image { max-width: 280px; max-height: 280px; }
+            .status-grid { grid-template-columns: 1fr; }
+            .shop-list { gap: 10px; }
+            .shop-item { padding: 10px; gap: 10px; }
         }
 
         @media (max-width: 480px) {
@@ -1173,21 +1046,13 @@
             .complete-subtitle { font-size: 18px; }
             .complete-message { font-size: 14px; padding: 8px 15px; }
             .complete-image { max-width: 220px; max-height: 220px; }
-            .status-grid { grid-template-columns: 1fr; }
-            .shop-list { padding: 10px; gap: 10px; }
-            .shop-item { padding: 10px; gap: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="debug-panel" id="debugPanel" onclick="this.style.display='none'">デバッグ情報（クリックで非表示）</div>
     
     <div class="container">
-        <div class="header-buttons">
-            <button class="header-btn shop-btn" onclick="openShop()">🛒 ショップ</button>
-            <button class="header-btn" onclick="openAccount()">👤 マイページ</button>
-        </div>
-
+        
         <h1 onclick="handleCheatClick()">🎲 小寺ハミルトンゲイリー ガチャ</h1>
         
         <div class="input-section">
@@ -1242,74 +1107,6 @@
             </div>
         </div>
 
-        <div class="modal-overlay" id="accountModal" onclick="event.stopPropagation()">
-            <div class="modal-card" onclick="event.stopPropagation()">
-                <div class="modal-header">
-                    <button class="close-modal" onclick="closeAccount()">✕</button>
-                    <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
-                    
-                    <div class="user-icon-wrapper" onclick="toggleEmojiPicker()">
-                        <div class="user-icon" id="userIcon">👤</div>
-                        <div class="edit-icon-badge">✎</div>
-                    </div>
-                    
-                    <div class="emoji-picker" id="emojiPicker">
-                        <span class="emoji-option" onclick="changeIcon('👤')">👤</span>
-                        <span class="emoji-option" onclick="changeIcon('👦')">👦</span>
-                        <span class="emoji-option" onclick="changeIcon('👨')">👨</span>
-                        <span class="emoji-option" onclick="changeIcon('🏀')">🏀</span>
-                        <span class="emoji-option" onclick="changeIcon('😎')">😎</span>
-                        <span class="emoji-option" onclick="changeIcon('🐵')">🐵</span>
-                        <button class="image-upload-btn" onclick="triggerImageUpload()">🖼️ 画像を選択</button>
-                    </div>
-
-                    <div class="user-name">
-                        <span id="userName">名無しの小寺ファン</span>
-                        <button class="edit-name-btn" onclick="editName()">✎</button>
-                    </div>
-                    <div class="user-rank" id="userRank">ランク: 見習い小寺</div>
-                </div>
-                <div class="status-grid">
-                    <div class="status-item kp-box">
-                        <div class="status-label">現在の所持 KP</div>
-                        <div class="status-value" id="statsCurrentKP">0</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">累計獲得 KP</div>
-                        <div class="status-value" id="statsTotalShuffleCount">0</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">アルバム収集率</div>
-                        <div class="status-value" id="statsAlbumProgress">0%</div>
-                    </div>
-                    <div class="status-item highlight">
-                        <div class="status-label">パーフェクト回数</div>
-                        <div class="status-value" id="statsPerfectCount">0</div>
-                    </div>
-                     <div class="status-item">
-                        <div class="status-label">小寺チャンス数</div>
-                        <div class="status-value" id="statsKoderaCount">0</div>
-                    </div>
-                    <div class="status-item">
-                        <div class="status-label">小寺率 (運勢)</div>
-                        <div class="status-value" id="statsLuckRate">0.0%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal-overlay" id="shopModal" onclick="event.stopPropagation()">
-            <div class="modal-card" onclick="event.stopPropagation()">
-                <div class="modal-header shop-header">
-                    <button class="close-modal" onclick="closeShop()">✕</button>
-                    <div class="modal-title">🛒 小寺ショップ</div>
-                    <div class="kp-display">所持KP: <span id="shopKpDisplay">0</span></div>
-                </div>
-                <div class="shop-list" id="shopList">
-                </div>
-            </div>
-        </div>
-
         <div class="kodera-chance" id="koderaChance">
             <div class="kodera-chance-emoji">🎉✨🎊</div>
             <div class="kodera-chance-text">小寺チャンス！！</div>
@@ -1326,9 +1123,9 @@
             <div class="shuffle-counter-value" id="shuffleCount">0</div>
         </div>
 
-        <div class="album-section">
-            <div class="album-header">
-                <div class="album-title">📚 小寺コレクション</div>
+        <div class="album-section section-box">
+            <div class="section-header">
+                <div class="section-title">📚 小寺コレクション</div>
                 <div class="album-progress" id="albumProgress">0/120</div>
             </div>
             <div class="album-pages">
@@ -1342,6 +1139,73 @@
                 <button class="clear-album-btn" onclick="clearAlbum()">コレクションをリセット</button>
             </div>
         </div>
+
+        <div class="mypage-section section-box">
+             <div class="section-header">
+                <div class="section-title">👤 マイページ</div>
+            </div>
+
+            <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+            
+            <div class="user-profile-header">
+                <div class="user-icon-wrapper" onclick="toggleEmojiPicker()">
+                    <div class="user-icon" id="userIcon">👤</div>
+                    <div class="edit-icon-badge">✎</div>
+                </div>
+                
+                <div class="emoji-picker" id="emojiPicker">
+                    <span class="emoji-option" onclick="changeIcon('👤')">👤</span>
+                    <span class="emoji-option" onclick="changeIcon('👦')">👦</span>
+                    <span class="emoji-option" onclick="changeIcon('👨')">👨</span>
+                    <span class="emoji-option" onclick="changeIcon('🏀')">🏀</span>
+                    <span class="emoji-option" onclick="changeIcon('😎')">😎</span>
+                    <span class="emoji-option" onclick="changeIcon('🐵')">🐵</span>
+                    <button class="image-upload-btn" onclick="triggerImageUpload()">🖼️ 画像を選択</button>
+                </div>
+
+                <div class="user-name">
+                    <span id="userName">名無しの小寺ファン</span>
+                    <button class="edit-name-btn" onclick="editName()">✎</button>
+                </div>
+                <div class="user-rank" id="userRank">ランク: 見習い小寺</div>
+            </div>
+
+            <div class="status-grid">
+                <div class="status-item kp-box">
+                    <div class="status-label">現在の所持 KP</div>
+                    <div class="status-value" id="statsCurrentKP">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">累計獲得 KP</div>
+                    <div class="status-value" id="statsTotalShuffleCount">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">アルバム収集率</div>
+                    <div class="status-value" id="statsAlbumProgress">0%</div>
+                </div>
+                <div class="status-item highlight">
+                    <div class="status-label">パーフェクト回数</div>
+                    <div class="status-value" id="statsPerfectCount">0</div>
+                </div>
+                 <div class="status-item">
+                    <div class="status-label">小寺チャンス数</div>
+                    <div class="status-value" id="statsKoderaCount">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">小寺率 (運勢)</div>
+                    <div class="status-value" id="statsLuckRate">0.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-section section-box">
+            <div class="section-header">
+                <div class="section-title">🛒 小寺ショップ</div>
+                <div class="kp-display-header">所持KP: <span id="shopKpDisplay">0</span></div>
+            </div>
+            <div class="shop-list" id="shopList"></div>
+        </div>
+
     </div>
 
     <script>
@@ -1392,21 +1256,14 @@
 
         const ALL_KODERA_COMBINATIONS = generateAllKoderaCombinations();
 
-        // デバッグ関数
-        function updateDebug(message) {
-            const panel = document.getElementById('debugPanel');
-            if (panel) {
-                const now = new Date().toLocaleTimeString();
-                panel.innerHTML = `${now}<br>${message}`;
-            }
-        }
-
         window.addEventListener('DOMContentLoaded', function() {
             loadData();
             displayAlbum();
             loadProfile();
             applyTheme();
             checkGodSpeed();
+            renderShop(); // ショップリストを即時描画
+            updateStats(); // 統計情報を即時描画
 
             if (PERFECT_IMAGE_PATH) {
                 document.getElementById('perfectImage').src = PERFECT_IMAGE_PATH;
@@ -1450,6 +1307,8 @@
             shuffleCount++;
             totalShuffleCount++;
             saveData();
+            updateStats(); // シャッフルのたびに更新
+            renderShop(); // 購入可否ボタンの更新のため
         }
 
         function handleCheatClick() {
@@ -1466,6 +1325,7 @@
                 totalShuffleCount += bonus;
                 saveData();
                 updateStats();
+                renderShop();
                 
                 alert(`🛠️ デバッグモード発動！\nKPを ${bonus.toLocaleString()} 追加しました！\n現在のKP: ${shuffleCount.toLocaleString()}`);
                 
@@ -1473,22 +1333,8 @@
             }
         }
 
-        function openShop() {
-            updateDebug('openShop: 開始');
-            
-            // 既にモーダルが開いている場合は何もしない
-            if (document.getElementById('shopModal').classList.contains('show')) {
-                updateDebug('openShop: 既に開いている');
-                return;
-            }
-            
-            updateDebug('openShop: モーダル取得中');
+        function renderShop() {
             const list = document.getElementById('shopList');
-            const modal = document.getElementById('shopModal');
-            const card = modal.querySelector('.modal-card');
-            
-            updateDebug(`openShop: list=${!!list}, modal=${!!modal}, card=${!!card}`);
-            
             document.getElementById('shopKpDisplay').textContent = shuffleCount;
             
             list.innerHTML = SHOP_ITEMS.map(item => {
@@ -1516,7 +1362,6 @@
                     const count = inventory[item.id] || 0;
                     btnHtml = `<button class="buy-btn" onclick="buyItem('${item.id}')" ${shuffleCount < item.price ? 'disabled' : ''}>購入 (${item.price.toLocaleString()} KP)<br>所持: ${count}</button>`;
                 } else if (item.type === 'consumable_bulk') {
-                    // まとめ買い用の表示
                     btnHtml = `<button class="buy-btn" onclick="buyItem('${item.id}')" ${shuffleCount < item.price ? 'disabled' : ''}>購入 (${item.price.toLocaleString()} KP)</button>`;
                 }
 
@@ -1540,31 +1385,11 @@
 
             if (localStorage.getItem('currentTheme')) {
                 list.innerHTML += `
-                    <div class="shop-item" style="justify-content: center; background: none; border: none;">
+                    <div class="shop-item" style="justify-content: center; background: none; border: none; box-shadow: none;">
                         <button class="buy-btn apply" style="background: #666;" onclick="setTheme('')">デフォルト背景に戻す</button>
                     </div>
                 `;
             }
-
-            document.getElementById('shopModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-            
-            // 詳細なスタイル情報をチェック
-            const cardStyle = window.getComputedStyle(card);
-            const modalStyle = window.getComputedStyle(modal);
-            
-            updateDebug(`
-                モーダル: display=${modalStyle.display}, z-index=${modalStyle.zIndex}<br>
-                カード: display=${cardStyle.display}, z-index=${cardStyle.zIndex}<br>
-                カード位置: top=${cardStyle.top}, left=${cardStyle.left}<br>
-                カードサイズ: width=${cardStyle.width}, height=${cardStyle.height}<br>
-                transform=${cardStyle.transform}
-            `);
-        }
-
-        function closeShop() {
-            document.getElementById('shopModal').classList.remove('show');
-            document.body.style.overflow = '';
         }
 
         function buyItem(itemId) {
@@ -1579,27 +1404,24 @@
                 if (item.type === 'consumable') {
                     inventory[item.id] = (inventory[item.id] || 0) + 1;
                 } else if (item.type === 'consumable_bulk') {
-                    // まとめ買い: ticket_koderaに加算
                     inventory['ticket_kodera'] = (inventory['ticket_kodera'] || 0) + item.amount;
                 } else {
                     inventory[item.id] = true;
                 }
                 
                 saveData();
+                renderShop(); // 購入後にリスト更新
                 
                 if (item.id === 'speed_god') checkGodSpeed();
                 if (item.id === 'ticket_kodera' || item.type === 'consumable_bulk') updateTicketDisplay();
                 if (item.type === 'title') updateStats();
                 
-                // テーマアイテムの場合は閉じてから適用
                 if (item.type === 'theme') {
                     alert('購入しました！');
-                    closeShop();
                     setTimeout(() => {
                         setTheme(item.themeClass);
                     }, 100);
                 } else {
-                    openShop();
                     alert('購入しました！');
                 }
             } else {
@@ -1608,17 +1430,9 @@
         }
 
         function setTheme(themeClass) {
-            updateDebug(`setTheme: ${themeClass}`);
             localStorage.setItem('currentTheme', themeClass);
             applyTheme();
-            
-            updateDebug('setTheme: モーダル閉じる');
-            // モーダルを閉じてから再度開く
-            closeShop();
-            setTimeout(() => {
-                updateDebug('setTheme: モーダル再度開く');
-                openShop();
-            }, 100);
+            renderShop(); // ボタン状態更新
         }
 
         function applyTheme() {
@@ -1691,6 +1505,7 @@
                 album.push(text);
                 localStorage.setItem('koderaAlbum', JSON.stringify(album));
                 displayAlbum();
+                updateStats();
 
                 if (album.length === ALL_KODERA_COMBINATIONS.length) {
                     setTimeout(() => {
@@ -1747,6 +1562,7 @@
             if (confirm('コレクションをすべてリセットしますか？')) {
                 localStorage.removeItem('koderaAlbum');
                 displayAlbum();
+                updateStats();
             }
         }
 
@@ -1776,23 +1592,6 @@
                 const icon = localStorage.getItem('userIcon') || '👤';
                 iconWrapper.textContent = icon;
             }
-        }
-
-        function openAccount() {
-            // 既にモーダルが開いている場合は何もしない
-            if (document.getElementById('accountModal').classList.contains('show')) {
-                return;
-            }
-            
-            updateStats();
-            document.getElementById('accountModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAccount() {
-            document.getElementById('accountModal').classList.remove('show');
-            document.getElementById('emojiPicker').classList.remove('show');
-            document.body.style.overflow = '';
         }
 
         function editName() {
@@ -2159,8 +1958,6 @@
             if (e.key === 'Escape') {
                 closePerfect();
                 closeComplete();
-                closeAccount();
-                closeShop();
             }
         });
     </script>
